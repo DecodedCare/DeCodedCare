@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decoded Care</title>
+    <style>
+        /* Simple, accessible styling with a clean blue gradient background */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            color: #0f172a;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #0284c7;
+            margin-bottom: 8px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #0284c7;
+        }
+
+        /* Results area below search box */
+        #result-box {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            display: none;
+            text-align: left;
+        }
+
+        .result-title {
+            font-weight: bold;
+            color: #0369a1;
+            text-transform: capitalize;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .lang-label {
+            font-weight: 600;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 12px;
+            display: block;
+        }
+
+        #res-en, #res-es, #res-ht {
+            font-size: 15px;
+            line-height: 1.4;
+            color: #334155;
+            margin-top: 2px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Decoded Care</h1>
+        <div class="subtitle">Decoding complex medical jargon into plain language for our communities.</div>
+        
+        <div class="search-box">
+            <!-- Search bar that triggers algorithmic matching on every key press -->
+            <input type="text" id="search-input" placeholder="Search a confusing medical word..." onkeyup="searchJargon()">
+        </div>
+
+        <div id="result-box">
+            <div id="res-term" class="result-title"></div>
+            
+            <span class="lang-label">Simple English:</span>
+            <div id="res-en"></div>
+            
+            <span class="lang-label">Español (Spanish):</span>
+            <div id="res-es"></div>
+            
+            <span class="lang-label">Kreyòl Ayisyen (Haitian Creole):</span>
+            <div id="res-ht"></div>
+        </div>
+
+        <div class="footer">Launched: October 2026 | Built by a Future Healthcare Professional</div>
+    </div>
+
+    <script>
+        // Your custom, hard-coded community dictionary database
+        const medicalDictionary = [
+            {
+                term: "informed consent",
+                en: "You completely understand the medical choices, risks, and give permission.",
+                es: "Usted entiende completamente las opciones y riesgos médicos, y da su permiso.",
+                ht: "Ou konprann tout chwa ak risk medikal yo nèt, epi ou bay pèmisyon."
+            },
+            {
+                term: "npo",
+                en: "Do not eat or drink anything at all before your procedure.",
+                es: "No coma ni beba nada en absoluto antes de su procedimiento.",
+                ht: "Pa manje ni bwè anyen ditou anvan pwosedi a."
+            },
+            {
+                term: "benign",
+                en: "Safe; not cancerous and not spreading.",
+                es: "Seguro; no es canceroso y no se está extendiendo.",
+                ht: "An sekirite; li pa kansè epi li pa gaye."
+            },
+            {
+                term: "hypertension",
+                en: "High blood pressure.",
+                es: "Presión arterial alta.",
+                ht: "Tansyon wo."
+            }
+        ];
+
+        // The algorithmic loop that matches input text to your database dictionary
+        function searchJargon() {
+            const query = document.getElementById("search-input").value.toLowerCase().trim();
+            const resultBox = document.getElementById("result-box");
+            
+            // If the search bar is empty, hide the result box
+            if (query === "") {
+                resultBox.style.display = "none";
+                return;
+            }
+
+            // Loop through your database array to find a match
+            let match = null;
+            for (let i = 0; i < medicalDictionary.length; i++) {
+                if (medicalDictionary[i].term.includes(query)) {
+                    match = medicalDictionary[i];
+                    break;
+                }
+            }
+
+            // If an algorithmic match is found, dynamically update the UI text fields
+            if (match) {
+                resultBox.style.display = "block";
+                document.getElementById("res-term").innerText = match.term;
+                document.getElementById("res-en").innerText = match.en;
+                document.getElementById("res-es").innerText = match.es;
+                document.getElementById("res-ht").innerText = match.ht;
+            } else {
+                // Keep the box open but let the user know you haven't added that word yet
+                resultBox.style.display = "block";
+                document.getElementById("res-term").innerText = "Not Found Yet";
+                document.getElementById("res-en").innerText = "This word hasn't been added to our human-verified dictionary yet.";
+                document.getElementById("res-es").innerText = "Esta palabra aún no ha sido agregada.";
+                document.getElementById("res-ht").innerText = "Mo sa a poko ajoute.";
+            }
+        }
+    </script>
+</body>
+</html>
