@@ -1,13 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Decoded Care</title>
+
     <style>
-        /* Simple, accessible styling with a clean blue gradient background */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                Roboto, sans-serif;
             background: linear-gradient(135deg, #e0f2fe, #bae6fd);
             min-height: 100vh;
             display: flex;
@@ -17,16 +19,19 @@
             margin: 0;
             padding: 20px;
             color: #0f172a;
+            box-sizing: border-box;
         }
 
         .container {
             background: white;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+                        0 2px 4px -2px rgb(0 0 0 / 0.1);
             text-align: center;
             width: 100%;
             max-width: 500px;
+            box-sizing: border-box;
         }
 
         h1 {
@@ -63,7 +68,6 @@
             border-color: #0284c7;
         }
 
-        /* Results area below search box */
         #result-box {
             margin-top: 24px;
             padding: 16px;
@@ -72,6 +76,7 @@
             border: 1px solid #e2e8f0;
             display: none;
             text-align: left;
+            overflow-wrap: anywhere;
         }
 
         .result-title {
@@ -90,9 +95,11 @@
             display: block;
         }
 
-        #res-en, #res-es, #res-ht {
+        #res-en,
+        #res-es,
+        #res-ht {
             font-size: 15px;
-            line-height: 1.4;
+            line-height: 1.5;
             color: #334155;
             margin-top: 2px;
         }
@@ -102,308 +109,350 @@
             font-size: 12px;
             color: #64748b;
         }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+            }
+
+            body {
+                padding: 12px;
+            }
+        }
     </style>
 </head>
-<body>
 
+<body>
     <div class="container">
         <h1>Decoded Care</h1>
-        <div class="subtitle">Decoding complex medical jargon into plain language for our communities.</div>
-        
-        <div class="search-box">
-            <!-- Search bar that triggers algorithmic matching on every key press -->
-            <input type="text" id="search-input" placeholder="Search a confusing medical word..." onkeyup="searchJargon()">
+
+        <div class="subtitle">
+            Decoding complex medical jargon into plain language
+            for our communities.
         </div>
 
-        <div id="result-box">
+        <div class="search-box">
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search a confusing medical word..."
+                aria-label="Search medical terminology"
+                aria-controls="result-box"
+                autocomplete="off"
+            >
+        </div>
+
+        <div id="result-box" aria-live="polite">
             <div id="res-term" class="result-title"></div>
-            
+
             <span class="lang-label">Simple English:</span>
             <div id="res-en"></div>
-            
+
             <span class="lang-label">Español (Spanish):</span>
             <div id="res-es"></div>
-            
-            <span class="lang-label">Kreyòl Ayisyen (Haitian Creole):</span>
+
+            <span class="lang-label">
+                Kreyòl Ayisyen (Haitian Creole):
+            </span>
             <div id="res-ht"></div>
         </div>
 
-        <div class="footer">Launched: November 2026 | Built by Jazzlyn Addison</div>
+        <div class="footer">
+            Launched: November 2026 | Built by Jazzlyn Addison
+        </div>
     </div>
 
     <script>
-        // Your custom, hard-coded community dictionary database
-const medicalDictionary = [
-    {
-        term: "informed consent",
-        en: "You completely understand the medical choices, risks, and give permission.",
-        es: "Usted entiende completamente las opciones y riesgos médicos, y da su permiso.",
-        ht: "Ou konprann tout chwa ak risk medikal yo nèt, epi ou bay pèmisyon."
-    },
-    {
-        term: "benign",
-        en: "Safe; not cancerous and not spreading.",
-        es: "Seguro; no es canceroso y no se está extendiendo.",
-        ht: "An sekirite; li pa kansè epi li pa gaye."
-    },
-    {
-        term: "hypertension",
-        en: "High blood pressure.",
-        es: "Presión arterial alta.",
-        ht: "Tansyon wo."
-    },
-    {
-        term: "topical",
-        en: "Applying a medicine directly to the outside of the body.",
-        es: "Aplicar un medicamento directamente en el exterior del cuerpo.",
-        ht: "Aplike yon medikaman dirèkteman sou deyò kò a."
-    },
-    {
-        term: "acute",
-        en: "Starting suddenly, short-lasting, and severe.",
-        es: "Que comienza de repente, dura poco tiempo y es grave.",
-        ht: "Ki kòmanse sibit, ki dire yon ti tan kout, epi ki grav."
-    },
-    {
-        term: "chronic",
-        en: "Lasting a long time or keeping coming back.",
-        es: "Que dura mucho tiempo o regresa constantemente.",
-        ht: "Ki dire lontan oswa ki tounen souvan."
-    },
-    {
-        term: "malignant",
-        en: "Dangerous, harmful, and cancerous.",
-        es: "Peligroso, dañino y canceroso.",
-        ht: "Ki danjere, ki bay pwoblèm, epi ki se kansè."
-    },
-    {
-        term: "edema",
-        en: "Swelling caused by trapped fluid in body tissues.",
-        es: "Hinchazón causada por líquido atrapado en los tejidos del cuerpo.",
-        ht: "Anfle ki rive lè gen dlo ki kwense nan tisi kò a."
-    },
-    {
-        term: "hypotension",
-        en: "Low blood pressure.",
-        es: "Presión arterial baja.",
-        ht: "Tansyon ba."
-    },
-    {
-        term: "sepsis",
-        en: "A severe, life-threatening body reaction to an infection.",
-        es: "Una reacción corporal grave y potencialmente mortal a una infección.",
-        ht: "Yon reyaksyon kò a ki grav anpil epi ki ka touye moun akòz yon enfeksyon."
-    },
-    {
-        term: "bradycardia",
-        en: "An unusually slow heart rate.",
-        es: "Un ritmo cardíaco inusualmente lento.",
-        ht: "Yon ritm kè ki pi dousman pase nòmal."
-    },
-    {
-        term: "tachycardia",
-        en: "An unusually fast heart rate.",
-        es: "Un ritmo cardíaco inusualmente rápido.",
-        ht: "Yon ritm kè ki pi rapid pase nòmal."
-    },
-    {
-        term: "arrhythmia",
-        en: "An irregular or abnormal heartbeat.",
-        es: "Un latido cardíaco irregular o anormal.",
-        ht: "Yon bat kè ki pa regilye oswa ki pa nòmal."
-    },
-    {
-        term: "lesion",
-        en: "An area of damaged skin, tissue, a sore, or a wound.",
-        es: "Un área de tejido dañado, una llaga o una herida.",
-        ht: "Yon zòn kote po a oswa tisi a domaje, yon blesi, oswa yon malen."
-    },
-    {
-        term: "impressive",
-        en: "Deeply concerning or severe (not a good thing).",
-        es: "Muy preocupante o grave (no es algo bueno).",
-        ht: "Ki bay gwo enkyetid oswa ki grav (sa pa vle di yon bon bagay)."
-    },
-    {
-        term: "grossly intact",
-        en: "Appearing generally healthy and working fine during a basic exam.",
-        es: "Que parece generalmente sano y funciona bien en un examen básico.",
-        ht: "Ki parèt an sante an jeneral epi ki mache byen nan yon examen senp."
-    },
-    {
-        term: "occult",
-        en: "Hidden or invisible to the naked eye.",
-        es: "Oculto o invisible a simple vista.",
-        ht: "Kache oswa ki pa parèt devan je."
-    },
-    {
-        term: "prognosis",
-        en: "The doctor's professional guess on how you will recover.",
-        es: "La predicción profesional del médico sobre cómo se recuperará.",
-        ht: "Prediksyon pwofesyonèl doktè a sou jan ou pral geri."
-    },
-    {
-        term: "relapse",
-        en: "The return of symptoms or sickness after getting better.",
-        es: "El regreso de los síntomas o la enfermedad después de mejorar.",
-        ht: "Lè sentòm yo oswa maladi a tounen apre ou te fin pi byen."
-    },
-    {
-        term: "remission",
-        en: "A temporary or permanent disappearance of disease signs.",
-        es: "Una desaparición temporal o permanente de los signos de la enfermedad.",
-        ht: "Lè tout siy maladi a disparèt pou yon tan oswa nèt."
-    },
-    {
-        term: "biopsy",
-        en: "Taking a small tissue piece to test it in a lab.",
-        es: "Extraer una pequeña muestra de tejido para analizarla en un laboratorio.",
-        ht: "Lè yo pran yon ti echantiyon nan tisi a pou egzaminen li nan laboratwa."
-    },
-    {
-        term: "intubation",
-        en: "Placing a flexible tube down the throat to help breathing.",
-        es: "Colocar un tubo flexible en las vías respiratorias para ayudar a respirar.",
-        ht: "Mete yon tib fleksib nan pasay lè a pou ede yon moun respire."
-    },
-    {
-        term: "outpatient",
-        en: "A treatment or visit where you leave the hospital on the same day.",
-        es: "Un tratamiento o visita donde se va del hospital el mismo día.",
-        ht: "Yon tretman oswa vizit kote ou kite lopital la menm jou a."
-    },
-    {
-        term: "inpatient",
-        en: "Staying overnight in the hospital for care.",
-        es: "Permanecer hospitalizado durante la noche para recibir atención.",
-        ht: "Lè yon moun rete pase nwit lan lopital la pou yo ba li swen."
-    },
-    {
-        term: "adverse effect",
-        en: "An unexpected, harmful, or bad reaction to a treatment.",
-        es: "Una reacción inesperada, dañina o mala a un tratamiento.",
-        ht: "Yon move reyaksyon ki parèt sibit epi ki bay pwoblèm apre yon tretman."
-    },
-    {
-        term: "contraindication",
-        en: "A specific reason why a medicine or treatment should not be used because it is dangerous for you.",
-        es: "Una razón específica por la cual un medicamento o tratamiento no debe usarse porque es peligroso para usted.",
-        ht: "Yon rezon espesyal ki fè yo pa dwe sèvi ak yon medikaman oswa yon tretman paske li danjere pou ou."
-    },
-    {
-        term: "systemic",
-        en: "Affecting the entire body instead of just one spot.",
-        es: "Que afecta a todo el cuerpo en lugar de a un solo lugar.",
-        ht: "Ki touche tout kò a nèt olye li rete yon sèl kote."
-    },
-    {
-        term: "metastasis",
-        en: "The spread of a disease from one part of the body to another.",
-        es: "La propagación de una enfermedad de una parte del cuerpo a otra.",
-        ht: "Lè yon maladi gaye soti nan yon pati nan kò a pou ale nan yon lòt."
-    },
-    {
-        term: "asymptomatic",
-        en: "Having a condition or illness but showing no signs or symptoms of it.",
-        es: "Tener una enfermedad pero no presentar ningún signo ni síntoma de ella.",
-        ht: "Lè yon moun gen yon maladi men li pa bay okenn siy oswa sentòm."
-    },
-    {
-        term: "localized",
-        en: "Stayed in one specific area of the body without spreading.",
-        es: "Que se mantiene en un área específica del cuerpo sin extenderse.",
-        ht: "Ki rete nan yon sèl zòn nan kò a san li pa gaye."
-    },
-    {
-        term: "ambulatory",
-        en: "Able to walk around and not confined to a bed.",
-        es: "Capaz de caminar y que no está confinado a una cama.",
-        ht: "Ki kapab mache, ki pa kloure nan yon kabann."
-    },
-    {
-        term: "idiopathic",
-        en: "A condition or illness that arises spontaneously with no known cause.",
-        es: "Una enfermedad que aparece de forma espontánea sin una causa conocida.",
-        ht: "Yon maladi ki parèt toudenkou san yo pa konnen sa ki lakòz li."
-    },
-    {
-        term: "febrile",
-        en: "Having or showing symptoms of a fever.",
-        es: "Que tiene fiebre o presenta síntomas de ella.",
-        ht: "Lè yon moun gen lafyèb oswa li montre sentòm lafyèb."
-    },
-    {
-        term: "necrosis",
-        en: "The death of living cells or tissues due to disease or injury.",
-        es: "La muerte de células o tejidos vivos debido a una enfermedad o lesión.",
-        ht: "Lanmò tisi oswa selil nan kò a akòz yon maladi oswa yon blesi."
-    },
-    {
-        term: "palliative care",
-        en: "Medical care focused on providing relief from pain and stress, rather than curing the illness.",
-        es: "Atención médica enfocada en aliviar el dolor y el estrés, en lugar de curar la enfermedad.",
-        ht: "Swen medikal ki la pou soulaje doulè ak estrès, olye pou yo geri maladi a."
-    },
-    {
-        term: "prophylaxis",
-        en: "Action or treatment taken to prevent a disease from happening.",
-        es: "Acción o tratamiento que se realiza para prevenir una enfermedad.",
-        ht: "Yon aksyon oswa tretman yo fè pou anpeche yon maladi rive."
-    },
-    {
-        term: "cognitive",
-        en: "Relating to conscious mental activities like thinking, reasoning, and remembering.",
-        es: "Relacionado con las actividades mentales conscientes como pensar, razonar y recordar.",
-        ht: "Ki gen rapò ak aktivite nan lespri a tankou kalkile, rezone, ak chonje."
-    },
-    {
-        term: "congestion",
-        en: "An abnormal buildup of fluid, such as blood in vessels or mucus in the nose.",
-        es: "Una acumulación anormal de líquido, como sangre en los vasos o mucosidad en la nariz.",
-        ht: "Yon kantite likid ki rasanble yon kote yon fason ki pa nòmal, tankou san nan venn oswa glè nan nen."
-    },
-    {
-        term: "incidence",
-        en: "How often a disease occurs in a specific group of people over a set time.",
-        es: "La frecuencia con la que ocurre una enfermedad en un grupo específico de personas durante un tiempo determinado.",
+        // Medical dictionary database
+        const medicalDictionary = [
+            {
+                term: "informed consent",
+                en: "You completely understand the medical choices, risks, and give permission.",
+                es: "Usted entiende completamente las opciones y riesgos médicos, y da su permiso.",
+                ht: "Ou konprann tout chwa ak risk medikal yo nèt, epi ou bay pèmisyon."
+            },
+            {
+                term: "benign",
+                en: "Safe; not cancerous and not spreading.",
+                es: "Seguro; no es canceroso y no se está extendiendo.",
+                ht: "An sekirite; li pa kansè epi li pa gaye."
+            },
+            {
+                term: "hypertension",
+                en: "High blood pressure.",
+                es: "Presión arterial alta.",
+                ht: "Tansyon wo."
+            },
+            {
+                term: "topical",
+                en: "Applying a medicine directly to the outside of the body.",
+                es: "Aplicar un medicamento directamente en el exterior del cuerpo.",
+                ht: "Aplike yon medikaman dirèkteman sou deyò kò a."
+            },
+            {
+                term: "acute",
+                en: "Starting suddenly, short-lasting, and severe.",
+                es: "Que comienza de repente, dura poco tiempo y es grave.",
+                ht: "Ki kòmanse sibit, ki dire yon ti tan kout, epi ki grav."
+            },
+            {
+                term: "chronic",
+                en: "Lasting a long time or keeping coming back.",
+                es: "Que dura mucho tiempo o regresa constantemente.",
+                ht: "Ki dire lontan oswa ki tounen souvan."
+            },
+            {
+                term: "malignant",
+                en: "Dangerous, harmful, and cancerous.",
+                es: "Peligroso, dañino y canceroso.",
+                ht: "Ki danjere, ki bay pwoblèm, epi ki se kansè."
+            },
+            {
+                term: "edema",
+                en: "Swelling caused by trapped fluid in body tissues.",
+                es: "Hinchazón causada por líquido atrapado en los tejidos del cuerpo.",
+                ht: "Anfle ki rive lè gen dlo ki kwense nan tisi kò a."
+            },
+            {
+                term: "hypotension",
+                en: "Low blood pressure.",
+                es: "Presión arterial baja.",
+                ht: "Tansyon ba."
+            },
+            {
+                term: "sepsis",
+                en: "A severe, life-threatening body reaction to an infection.",
+                es: "Una reacción corporal grave y potencialmente mortal a una infección.",
+                ht: "Yon reyaksyon kò a ki grav anpil epi ki ka touye moun akòz yon enfeksyon."
+            },
+            {
+                term: "bradycardia",
+                en: "An unusually slow heart rate.",
+                es: "Un ritmo cardíaco inusualmente lento.",
+                ht: "Yon ritm kè ki pi dousman pase nòmal."
+            },
+            {
+                term: "tachycardia",
+                en: "An unusually fast heart rate.",
+                es: "Un ritmo cardíaco inusualmente rápido.",
+                ht: "Yon ritm kè ki pi rapid pase nòmal."
+            },
+            {
+                term: "arrhythmia",
+                en: "An irregular or abnormal heartbeat.",
+                es: "Un latido cardíaco irregular o anormal.",
+                ht: "Yon bat kè ki pa regilye oswa ki pa nòmal."
+            },
+            {
+                term: "lesion",
+                en: "An area of damaged skin, tissue, a sore, or a wound.",
+                es: "Un área de tejido dañado, una llaga o una herida.",
+                ht: "Yon zòn kote po a oswa tisi a domaje, yon blesi, oswa yon malen."
+            },
+            {
+                term: "impressive",
+                en: "Deeply concerning or severe (not a good thing).",
+                es: "Muy preocupante o grave (no es algo bueno).",
+                ht: "Ki bay gwo enkyetid oswa ki grav (sa pa vle di yon bon bagay)."
+            },
+            {
+                term: "grossly intact",
+                en: "Appearing generally healthy and working fine during a basic exam.",
+                es: "Que parece generalmente sano y funciona bien en un examen básico.",
+                ht: "Ki parèt an sante an jeneral epi ki mache byen nan yon egzamen senp."
+            },
+            {
+                term: "occult",
+                en: "Hidden or invisible to the naked eye.",
+                es: "Oculto o invisible a simple vista.",
+                ht: "Kache oswa ki pa parèt devan je."
+            },
+            {
+                term: "prognosis",
+                en: "The doctor's professional guess on how you will recover.",
+                es: "La predicción profesional del médico sobre cómo se recuperará.",
+                ht: "Prediksyon pwofesyonèl doktè a sou jan ou pral geri."
+            },
+            {
+                term: "relapse",
+                en: "The return of symptoms or sickness after getting better.",
+                es: "El regreso de los síntomas o la enfermedad después de mejorar.",
+                ht: "Lè sentòm yo oswa maladi a tounen apre ou te fin pi byen."
+            },
+            {
+                term: "remission",
+                en: "A temporary or permanent disappearance of disease signs.",
+                es: "Una desaparición temporal o permanente de los signos de la enfermedad.",
+                ht: "Lè tout siy maladi a disparèt pou yon tan oswa nèt."
+            },
+            {
+                term: "biopsy",
+                en: "Taking a small tissue piece to test it in a lab.",
+                es: "Extraer una pequeña muestra de tejido para analizarla en un laboratorio.",
+                ht: "Lè yo pran yon ti echantiyon nan tisi a pou egzaminen li nan laboratwa."
+            },
+            {
+                term: "intubation",
+                en: "Placing a flexible tube down the throat to help breathing.",
+                es: "Colocar un tubo flexible en las vías respiratorias para ayudar a respirar.",
+                ht: "Mete yon tib fleksib nan pasay lè a pou ede yon moun respire."
+            },
+            {
+                term: "outpatient",
+                en: "A treatment or visit where you leave the hospital on the same day.",
+                es: "Un tratamiento o visita donde se va del hospital el mismo día.",
+                ht: "Yon tretman oswa vizit kote ou kite lopital la menm jou a."
+            },
+            {
+                term: "inpatient",
+                en: "Staying overnight in the hospital for care.",
+                es: "Permanecer hospitalizado durante la noche para recibir atención.",
+                ht: "Lè yon moun rete pase nwit lan lopital la pou yo ba li swen."
+            },
+            {
+                term: "adverse effect",
+                en: "An unexpected, harmful, or bad reaction to a treatment.",
+                es: "Una reacción inesperada, dañina o mala a un tratamiento.",
+                ht: "Yon move reyaksyon ki parèt sibit epi ki bay pwoblèm apre yon tretman."
+            },
+            {
+                term: "contraindication",
+                en: "A specific reason why a medicine or treatment should not be used because it is dangerous for you.",
+                es: "Una razón específica por la cual un medicamento o tratamiento no debe usarse porque es peligroso para usted.",
+                ht: "Yon rezon espesyal ki fè yo pa dwe sèvi ak yon medikaman oswa yon tretman paske li danjere pou ou."
+            },
+            {
+                term: "systemic",
+                en: "Affecting the entire body instead of just one spot.",
+                es: "Que afecta a todo el cuerpo en lugar de a un solo lugar.",
+                ht: "Ki touche tout kò a nèt olye li rete yon sèl kote."
+            },
+            {
+                term: "metastasis",
+                en: "The spread of a disease from one part of the body to another.",
+                es: "La propagación de una enfermedad de una parte del cuerpo a otra.",
+                ht: "Lè yon maladi gaye soti nan yon pati nan kò a pou ale nan yon lòt."
+            },
+            {
+                term: "asymptomatic",
+                en: "Having a condition or illness but showing no signs or symptoms of it.",
+                es: "Tener una enfermedad pero no presentar ningún signo ni síntoma de ella.",
+                ht: "Lè yon moun gen yon maladi men li pa bay okenn siy oswa sentòm."
+            },
+            {
+                term: "localized",
+                en: "Staying in one specific area of the body without spreading.",
+                es: "Que se mantiene en un área específica del cuerpo sin extenderse.",
+                ht: "Ki rete nan yon sèl zòn nan kò a san li pa gaye."
+            },
+            {
+                term: "ambulatory",
+                en: "Able to walk around and not confined to a bed.",
+                es: "Capaz de caminar y que no está confinado a una cama.",
+                ht: "Ki kapab mache, ki pa oblije rete nan yon kabann."
+            },
+            {
+                term: "idiopathic",
+                en: "A condition or illness that arises spontaneously with no known cause.",
+                es: "Una enfermedad que aparece de forma espontánea sin una causa conocida.",
+                ht: "Yon maladi ki parèt san yo pa konnen sa ki lakòz li."
+            },
+            {
+                term: "febrile",
+                en: "Having or showing symptoms of a fever.",
+                es: "Que tiene fiebre o presenta síntomas de ella.",
+                ht: "Lè yon moun gen lafyèv oswa li montre sentòm lafyèv."
+            },
+            {
+                term: "necrosis",
+                en: "The death of living cells or tissues due to disease or injury.",
+                es: "La muerte de células o tejidos vivos debido a una enfermedad o lesión.",
+                ht: "Lanmò tisi oswa selil nan kò a akòz yon maladi oswa yon blesi."
+            },
+            {
+                term: "palliative care",
+                en: "Medical care focused on providing relief from pain and stress, rather than curing the illness.",
+                es: "Atención médica enfocada en aliviar el dolor y el estrés, en lugar de curar la enfermedad.",
+                ht: "Swen medikal ki la pou soulaje doulè ak estrès, olye pou yo geri maladi a."
+            },
+            {
+                term: "prophylaxis",
+                en: "Action or treatment taken to prevent a disease from happening.",
+                es: "Acción o tratamiento que se realiza para prevenir una enfermedad.",
+                ht: "Yon aksyon oswa tretman yo fè pou anpeche yon maladi rive."
+            },
+            {
+                term: "cognitive",
+                en: "Relating to mental activities like thinking, reasoning, and remembering.",
+                es: "Relacionado con las actividades mentales como pensar, razonar y recordar.",
+                ht: "Ki gen rapò ak aktivite nan lespri a tankou reflechi, rezone, ak sonje."
+            },
+            {
+                term: "congestion",
+                en: "An abnormal buildup of fluid, such as blood in vessels or mucus in the nose.",
+                es: "Una acumulación anormal de líquido, como sangre en los vasos o mucosidad en la nariz.",
+                ht: "Yon kantite likid ki rasanble yon kote yon fason ki pa nòmal, tankou san nan veso sangen oswa glè nan nen."
+            },
+            {
+                term: "incidence",
+                en: "How often a disease occurs in a specific group of people over a set time.",
+                es: "La frecuencia con la que ocurre una enfermedad en un grupo específico de personas durante un tiempo determinado.",
+                ht: "Konbyen fwa yon maladi rive nan yon gwoup moun espesifik pandan yon peryòd tan."
+            }
+        ];
 
-        // The algorithmic loop that matches input text to your database dictionary
+        // Search the medical dictionary as the user types.
         function searchJargon() {
-            const query = document.getElementById("search-input").value.toLowerCase().trim();
+            const query = document.getElementById("search-input")
+                .value.toLowerCase().trim();
+
             const resultBox = document.getElementById("result-box");
-            
-            // If the search bar is empty, hide the result box
+
+            // Hide results if the search field is empty.
             if (query === "") {
                 resultBox.style.display = "none";
                 return;
             }
 
-            // Loop through your database array to find a match
-            let match = null;
-            for (let i = 0; i < medicalDictionary.length; i++) {
-                if (medicalDictionary[i].term.includes(query)) {
-                    match = medicalDictionary[i];
-                    break;
-                }
+            // First, look for an exact match.
+            let match = medicalDictionary.find(function(item) {
+                return item.term.toLowerCase() === query;
+            });
+
+            // If no exact match exists, look for a partial match.
+            if (!match) {
+                match = medicalDictionary.find(function(item) {
+                    return item.term.toLowerCase().includes(query);
+                });
             }
 
-            // If an algorithmic match is found, dynamically update the UI text fields
+            resultBox.style.display = "block";
+
             if (match) {
-                resultBox.style.display = "block";
                 document.getElementById("res-term").innerText = match.term;
                 document.getElementById("res-en").innerText = match.en;
                 document.getElementById("res-es").innerText = match.es;
                 document.getElementById("res-ht").innerText = match.ht;
             } else {
-                // Keep the box open but let the user know you haven't added that word yet
-                resultBox.style.display = "block";
                 document.getElementById("res-term").innerText = "Not Found Yet";
-                document.getElementById("res-en").innerText = "This word hasn't been added to our human-verified dictionary yet.";
-                document.getElementById("res-es").innerText = "Esta palabra aún no ha sido agregada.";
-                document.getElementById("res-ht").innerText = "Mo sa a poko ajoute.";
+                document.getElementById("res-en").innerText =
+                    "This word hasn't been added to our human-verified dictionary yet.";
+                document.getElementById("res-es").innerText =
+                    "Esta palabra aún no ha sido agregada.";
+                document.getElementById("res-ht").innerText =
+                    "Mo sa a poko ajoute.";
             }
         }
+
+        // Attach the search function after the page elements are available.
+        document.getElementById("search-input").addEventListener(
+            "input",
+            searchJargon
+        );
     </script>
+</body>
+</html>
+
 </body>
 </html>
 
