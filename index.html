@@ -40,12 +40,14 @@ input:focus { border-color: #0284c7; }
 margin-top: 24px; padding: 16px; border-radius: 8px; background: #f8fafc;
 border: 1px solid #e2e8f0; display: none; text-align: left; overflow-wrap: anywhere;
 }
-.result-title { font-weight: bold; color: #0369a1; text-transform: capitalize; margin-bottom: 8px;
-font-size: 18px; }
+.result-title { font-weight: bold; color: #0369a1; text-transform: capitalize; margin-bottom: 8px; font-size: 18px; }
 .lang-label { font-weight: 600; font-size: 12px; color: #64748b; margin-top: 12px; display: block; }
 #res-en, #res-es, #res-ht { font-size: 15px; line-height: 1.5; color: #334155; margin-top: 2px; }
 .footer { margin-top: 40px; font-size: 12px; color: #64748b; }
-@media (max-width: 480px) { .container { padding: 24px; } body { padding: 12px; } }
+@media (max-width: 480px) {
+.container { padding: 24px; }
+body { padding: 12px; }
+}
 </style>
 </head>
 <body>
@@ -64,521 +66,204 @@ aria-label="Search medical terminology" aria-controls="result-box" autocomplete=
 </div>
 <div class="footer">Launched: November 2026 | Built by Jazzlyn Addison</div>
 </div>
+
 <script>
 const medicalDictionary = [
-{ term: "informed consent", en: "You completely understand the medical choices, risks, and give
-permission.", es: "Usted entiende completamente las opciones y riesgos médicos, y da su permiso.", ht: "Ou
-konprann tout chwa ak risk medikal yo nèt, epi ou bay pèmisyon." },
-{ term: "differential diagnosis", en: "A list of possible illnesses that could explain your
-symptoms.", es: "Una lista de posibles enfermedades que podrían explicar sus síntomas.", ht: "Yon lis maladi
-posib ki ta ka esplike sentòm ou yo." },
-{ term: "etiology", en: "The cause or origin of a disease.", es: "La causa u origen de una
-enfermedad.", ht: "Kòz oswa orijin yon maladi." },
-{ term: "pathology", en: "The study of diseases and the changes they cause in the body.", es: "El
-estudio de las enfermedades y los cambios que causan en el cuerpo.", ht: "Etid maladi yo ak chanjman yo lakòz
-nan kò a." },
-{ term: "comorbidity", en: "Having two or more health conditions at the same time.", es: "Tener dos
-o más problemas de salud al mismo tiempo.", ht: "Lè yon moun gen de oswa plis pwoblèm sante an menm tan." },
-{ term: "complication", en: "An additional health problem that develops during an illness or
-treatment.", es: "Un problema de salud adicional que aparece durante una enfermedad o tratamiento.", ht: "Yon
-lòt pwoblèm sante ki devlope pandan yon maladi oswa tretman." },
-{ term: "deterioration", en: "A worsening of someone's health or condition.", es: "Un empeoramiento
-de la salud o condición de una persona.", ht: "Lè sante oswa kondisyon yon moun vin pi mal." },
-{ term: "exacerbation", en: "A period when an illness or its symptoms become worse.", es: "Un
-período en el que una enfermedad o sus síntomas empeoran.", ht: "Yon peryòd kote yon maladi oswa sentòm li yo
-vin pi mal." },
-{ term: "remission", en: "A period when signs or symptoms of a disease decrease or disappear.", es:
-"Un período en el que los signos o síntomas de una enfermedad disminuyen o desaparecen.", ht: "Yon peryòd kote
-siy oswa sentòm yon maladi diminye oswa disparèt." },
-{ term: "recurrence", en: "The return of a disease or condition after it improved or disappeared.",
-es: "El regreso de una enfermedad o condición después de mejorar o desaparecer.", ht: "Lè yon maladi oswa
-pwoblèm sante retounen apre li te amelyore oswa disparèt." },
-{ term: "chronic condition", en: "A health problem that lasts a long time and may need ongoing
-care.", es: "Un problema de salud que dura mucho tiempo y puede requerir atención continua.", ht: "Yon pwoblèm
-sante ki dire lontan epi ki ka bezwen swen kontinyèl." },
-{ term: "acute condition", en: "A condition that begins suddenly or develops over a short period.",
-es: "Una condición que comienza de repente o se desarrolla en poco tiempo.", ht: "Yon pwoblèm sante ki kòmanse
-sibitman oswa devlope nan yon ti tan." },
-{ term: "idiopathic", en: "A condition or illness that arises spontaneously with no known cause.",
-es: "Una enfermedad que aparece de forma espontánea sin una causa conocida.", ht: "Yon maladi ki parèt san yo
-pa konnen sa ki lakòz li." },
-{ term: "asymptomatic", en: "Having a condition or illness but showing no signs or symptoms of
-it.", es: "Tener una enfermedad pero no presentar ningún signo ni síntoma de ella.", ht: "Lè yon moun gen yon
-maladi men li pa bay okenn siy oswa sentòm." },
-{ term: "symptomatic", en: "Showing signs or symptoms of a health condition.", es: "Presentar
-signos o síntomas de una condición de salud.", ht: "Lè yon moun montre siy oswa sentòm yon pwoblèm sante." },
-{ term: "prognosis", en: "The doctor's professional guess on how you will recover.", es: "La
-predicción profesional del médico sobre cómo se recuperará.", ht: "Prediksyon pwofesyonèl doktè a sou jan ou
-pral geri." },
-{ term: "etiological factor", en: "Something that contributes to causing a disease.", es: "Algo que
-contribuye a causar una enfermedad.", ht: "Yon bagay ki kontribye nan lakòz yon maladi." },
-{ term: "predisposition", en: "A greater likelihood of developing a particular condition.", es:
-"Una mayor probabilidad de desarrollar una condición específica.", ht: "Yon pi gwo chans pou devlope yon
-pwoblèm sante espesifik." },
-{ term: "risk factor", en: "Something that increases the chance of developing a disease or
-injury.", es: "Algo que aumenta la posibilidad de desarrollar una enfermedad o lesión.", ht: "Yon bagay ki
-ogmante chans pou devlope yon maladi oswa blesi." },
-{ term: "preventive care", en: "Healthcare intended to prevent illness or detect problems early.",
-es: "Atención médica destinada a prevenir enfermedades o detectar problemas temprano.", ht: "Swen medikal ki
-fèt pou anpeche maladi oswa dekouvri pwoblèm bonè." },
-{ term: "screening", en: "Testing people for a condition before they notice symptoms.", es:
-"Realizar pruebas para detectar una condición antes de que aparezcan síntomas.", ht: "Fè tès pou chèche yon
-pwoblèm sante anvan sentòm yo parèt." },
-{ term: "false positive", en: "A test result that suggests a condition is present when it is not.",
-es: "Un resultado que indica una condición cuando en realidad no existe.", ht: "Yon rezilta tès ki montre yon
-pwoblèm sante ki pa la vre." },
-{ term: "false negative", en: "A test result that misses a condition that is actually present.",
-es: "Un resultado que no detecta una condición que sí está presente.", ht: "Yon rezilta tès ki pa detekte yon
-pwoblèm sante ki la vre." },
-{ term: "sensitivity", en: "How well a test identifies people who truly have a condition.", es:
-"Qué tan bien una prueba identifica a las personas que realmente tienen una condición.", ht: "Nan ki nivo yon
-tès idantifye moun ki vrèman gen yon pwoblèm sante." },
-{ term: "specificity", en: "How well a test identifies people who do not have a condition.", es:
-"Qué tan bien una prueba identifica a las personas que no tienen una condición.", ht: "Nan ki nivo yon tès
-idantifye moun ki pa gen yon pwoblèm sante." },
-{ term: "incidence", en: "How often a disease occurs in a specific group of people over a set
-time.", es: "La frecuencia con la que ocurre una enfermedad en un grupo específico de personas durante un
-tiempo determinado.", ht: "Konbyen fwa yon maladi rive nan yon gwoup moun espesifik pandan yon peryòd tan." },
-{ term: "prevalence", en: "The total number of people in a population who have a condition at a
-given time.", es: "El número total de personas de una población que tienen una condición en un momento
-determinado.", ht: "Kantite total moun nan yon popilasyon ki gen yon pwoblèm sante nan yon moman espesifik." },
-{ term: "morbidity", en: "Illness or the burden of health problems in a population.", es:
-"Enfermedad o la carga de problemas de salud en una población.", ht: "Maladi oswa kantite pwoblèm sante nan yon
-popilasyon." },
-{ term: "mortality", en: "Deaths within a population during a specific period.", es: "Las muertes
-dentro de una población durante un período específico.", ht: "Kantite lanmò nan yon popilasyon pandan yon
-peryòd espesifik." },
-{ term: "sequela", en: "A lasting problem that remains after an illness or injury.", es: "Un
-problema duradero que queda después de una enfermedad o lesión.", ht: "Yon pwoblèm ki rete apre yon maladi oswa
-blesi." },
-{ term: "remission induction", en: "Treatment intended to make a disease enter remission.", es:
-"Tratamiento destinado a lograr que una enfermedad entre en remisión.", ht: "Tretman ki fèt pou fè yon maladi
-antre nan remisyon." },
-{ term: "iatrogenic", en: "Caused unintentionally by medical care or treatment.", es: "Causado
-involuntariamente por la atención o el tratamiento médico.", ht: "Yon pwoblèm ki rive san entansyon akoz swen
-oswa tretman medikal." },
-{ term: "nosocomial infection", en: "An infection acquired while receiving care in a healthcare
-facility.", es: "Una infección adquirida mientras se recibe atención en un centro de salud.", ht: "Yon
-enfeksyon yon moun pran pandan l ap resevwa swen nan yon etablisman sante." },
-{ term: "iatrogenic complication", en: "A health problem caused unintentionally by a medical
-procedure or treatment.", es: "Un problema de salud causado involuntariamente por un procedimiento o
-tratamiento médico.", ht: "Yon pwoblèm sante ki rive san entansyon akoz yon pwosedi oswa tretman medikal." },
-{ term: "contraindication", en: "A specific reason why a medicine or treatment should not be used
-because it is dangerous for you.", es: "Una razón específica por la cual un medicamento o tratamiento no debe
-usarse porque es peligroso para usted.", ht: "Yon rezon espesyal ki fè yo pa dwe sèvi ak yon medikaman oswa yon
-tretman paske li danjere pou ou." },
-{ term: "indication", en: "A medical reason for using a medicine, test, or treatment.", es: "Una
-razón médica para utilizar un medicamento, prueba o tratamiento.", ht: "Yon rezon medikal pou itilize yon
-medikaman, tès oswa tretman." },
-{ term: "therapeutic", en: "Related to treating or improving a health condition.", es: "Relacionado
-con el tratamiento o la mejora de una condición de salud.", ht: "Ki gen rapò ak tretman oswa amelyorasyon yon
-pwoblèm sante." },
-{ term: "palliative care", en: "Medical care focused on providing relief from pain and stress,
-rather than curing the illness.", es: "Atención médica enfocada en aliviar el dolor y el estrés, en lugar de
-curar la enfermedad.", ht: "Swen medikal ki la pou soulaje doulè ak estrès, olye pou yo geri maladi a." },
-{ term: "curative treatment", en: "Treatment intended to eliminate a disease rather than only
-manage its symptoms.", es: "Tratamiento destinado a eliminar una enfermedad en lugar de solo controlar sus
-síntomas.", ht: "Tretman ki fèt pou elimine yon maladi olye pou sèlman kontwole sentòm li yo." },
-{ term: "maintenance therapy", en: "Ongoing treatment intended to keep a condition controlled or
-prevent its return.", es: "Tratamiento continuo destinado a mantener una condición controlada o evitar que
-regrese.", ht: "Tretman kontinyèl ki fèt pou kenbe yon pwoblèm sante anba kontwòl oswa anpeche li retounen." },
-{ term: "titration", en: "Adjusting a medicine dose gradually to find the appropriate amount.", es:
-"Ajustar gradualmente la dosis de un medicamento para encontrar la cantidad adecuada.", ht: "Ajiste dòz yon
-medikaman piti piti pou jwenn kantite ki apwopriye a." },
-{ term: "dosage", en: "The amount of medicine taken and how often it is taken.", es: "La cantidad
-de medicamento que se toma y la frecuencia con que se toma.", ht: "Kantite medikaman yon moun pran ak konbyen
-fwa li pran li." },
-{ term: "adherence", en: "How closely someone follows an agreed treatment plan.", es: "Qué tan bien
-una persona sigue un plan de tratamiento acordado.", ht: "Nan ki nivo yon moun suiv plan tretman yo te dakò sou
-li." },
-{ term: "drug interaction", en: "When one medicine, food, or substance changes how another medicine
-works.", es: "Cuando un medicamento, alimento o sustancia cambia la forma en que funciona otro medicamento.",
-ht: "Lè yon medikaman, manje oswa lòt sibstans chanje fason yon lòt medikaman aji." },
-{ term: "side effect", en: "An unintended effect of a medicine or treatment, which may be harmful
-or harmless.", es: "Un efecto no deseado de un medicamento o tratamiento, que puede ser dañino o inofensivo.",
-ht: "Yon efè yon medikaman oswa tretman lakòz san se pa sa yo t ap chèche, ki ka danjere oswa pa danjere." },
-{ term: "allergic reaction", en: "An immune system response to something the body mistakenly treats
-as harmful.", es: "Una respuesta del sistema inmunitario a algo que el cuerpo identifica erróneamente como
-dañino.", ht: "Yon reyaksyon sistèm iminitè a fè kont yon bagay kò a panse ki danjere." },
-{ term: "anaphylaxis", en: "A severe allergic reaction that requires immediate emergency
-treatment.", es: "Una reacción alérgica grave que requiere tratamiento de emergencia inmediato.", ht: "Yon
-reyaksyon alèjik grav ki mande swen ijans touswit." },
-{ term: "inflammation", en: "The body's response to injury, infection, or irritation, often causing
-swelling or pain.", es: "La respuesta del cuerpo a una lesión, infección o irritación, que suele causar
-hinchazón o dolor.", ht: "Reyaksyon kò a devan yon blesi, enfeksyon oswa iritasyon, ki souvan lakòz anfle oswa
-doulè." },
-{ term: "infection", en: "When harmful microorganisms enter the body and multiply.", es: "Cuando
-microorganismos dañinos entran en el cuerpo y se multiplican.", ht: "Lè mikwo-òganis ki danjere antre nan kò a
-epi yo miltipliye." },
-{ term: "colonization", en: "When microorganisms live on or in the body without necessarily causing
-illness.", es: "Cuando microorganismos viven en el cuerpo sin causar necesariamente una enfermedad.", ht: "Lè
-mikwo-òganis rete sou oswa andedan kò a san yo pa nesesèman lakòz maladi." },
-{ term: "contagious", en: "Able to spread from one person to another.", es: "Que puede transmitirse
-de una persona a otra.", ht: "Ki kapab pase soti nan yon moun pou ale nan yon lòt." },
-{ term: "communicable disease", en: "A disease that can spread between people or through another
-source.", es: "Una enfermedad que puede propagarse entre personas o por otra fuente.", ht: "Yon maladi ki ka
-gaye ant moun oswa atravè yon lòt sous." },
-{ term: "incubation period", en: "The time between catching an infection and developing symptoms.",
-es: "El tiempo entre contraer una infección y desarrollar síntomas.", ht: "Tan ki pase ant lè yon moun pran
-enfeksyon an ak lè sentòm yo kòmanse." },
-{ term: "carrier", en: "A person or organism that carries a germ and may spread it without
-symptoms.", es: "Una persona u organismo que porta un microbio y puede transmitirlo sin presentar síntomas.",
-ht: "Yon moun oswa òganis ki pote yon mikwòb epi ki ka gaye li san sentòm." },
-{ term: "immunity", en: "The body's ability to defend itself against a particular infection or
-disease.", es: "La capacidad del cuerpo para defenderse de una infección o enfermedad específica.", ht:
-"Kapasite kò a pou defann tèt li kont yon enfeksyon oswa maladi espesifik." },
-{ term: "autoimmune", en: "Describing a condition in which the immune system attacks the body's own
-tissues.", es: "Describe una condición en la que el sistema inmunitario ataca los propios tejidos del cuerpo.",
-ht: "Ki dekri yon pwoblèm kote sistèm iminitè a atake pwòp tisi kò a." },
-{ term: "immunocompromised", en: "Having a weakened immune system that makes fighting infections
-harder.", es: "Tener un sistema inmunitario debilitado que dificulta combatir infecciones.", ht: "Lè sistèm
-iminitè yon moun fèb epi li gen plis difikilte pou konbat enfeksyon." },
-{ term: "benign", en: "Safe; not cancerous and not spreading.", es: "Seguro; no es canceroso y no
-se está extendiendo.", ht: "An sekirite; li pa kansè epi li pa gaye." },
-{ term: "malignant", en: "Dangerous, harmful, and cancerous.", es: "Peligroso, dañino y
-canceroso.", ht: "Ki danjere, ki bay pwoblèm, epi ki se kansè." },
-{ term: "metastasis", en: "The spread of a disease from one part of the body to another.", es: "La
-propagación de una enfermedad de una parte del cuerpo a otra.", ht: "Lè yon maladi gaye soti nan yon pati nan
-kò a pou ale nan yon lòt." },
-{ term: "tumor", en: "An abnormal mass of tissue that may be benign or malignant.", es: "Una masa
-anormal de tejido que puede ser benigna o maligna.", ht: "Yon gwoup tisi ki grandi yon fason ki pa nòmal epi ki
-ka pa kansè oswa kansè." },
-{ term: "neoplasm", en: "An abnormal growth of cells that forms new tissue.", es: "Un crecimiento
-anormal de células que forma tejido nuevo.", ht: "Yon kwasans selil ki pa nòmal ki fòme nouvo tisi." },
-{ term: "nodule", en: "A small lump or growth in tissue that needs interpretation based on its
-features.", es: "Un pequeño bulto o crecimiento en un tejido que debe evaluarse según sus características.",
-ht: "Yon ti boul oswa kwasans nan tisi ki bezwen evalyasyon selon karakteristik li yo." },
-{ term: "cyst", en: "A sac-like structure in the body that may contain fluid or other material.",
-es: "Una estructura en forma de saco que puede contener líquido u otro material.", ht: "Yon estrikti ki sanble
-ak yon ti sak nan kò a ki ka gen likid oswa lòt materyèl." },
-{ term: "atrophy", en: "The shrinking or wasting away of tissue or an organ.", es: "La reducción o
-pérdida de tamaño de un tejido u órgano.", ht: "Lè tisi oswa yon ògàn diminye nan gwosè oswa vin pi piti." },
-{ term: "hypertrophy", en: "An increase in the size of cells that makes a tissue or organ larger.",
-es: "Un aumento del tamaño de las células que hace que un tejido u órgano crezca.", ht: "Lè selil yo vin pi gwo
-epi sa fè yon tisi oswa ògàn vin pi gwo." },
-{ term: "ischemia", en: "Reduced blood flow to an area, which can limit its oxygen supply.", es:
-"Reducción del flujo sanguíneo a una zona, lo que puede limitar su suministro de oxígeno.", ht: "Lè san pa
-sikile ase nan yon zòn, sa ki ka diminye oksijèn li resevwa." },
-{ term: "infarction", en: "Tissue damage or death caused by a lack of blood supply.", es: "Daño o
-muerte del tejido causado por la falta de suministro de sangre.", ht: "Domaj oswa lanmò tisi ki rive paske li
-pa resevwa ase san." },
-{ term: "effusion", en: "An abnormal buildup of fluid in a body space, such as around a lung.", es:
-"Una acumulación anormal de líquido en un espacio del cuerpo, como alrededor de un pulmón.", ht: "Yon
-akimilasyon likid ki pa nòmal nan yon espas nan kò a, tankou bò kote yon poumon." },
-{ term: "hemorrhage", en: "Heavy or uncontrolled bleeding.", es: "Sangrado abundante o
-incontrolado.", ht: "Gwo senyen oswa senyen ki pa kontwole." },
-{ term: "thrombosis", en: "The formation of a blood clot inside a blood vessel.", es: "La formación
-de un coágulo de sangre dentro de un vaso sanguíneo.", ht: "Lè yon boul san fòme andedan yon veso sangen." },
-{ term: "embolism", en: "A blockage in a blood vessel caused by material traveling through the
-bloodstream.", es: "Una obstrucción de un vaso sanguíneo causada por material que viaja por la sangre.", ht:
-"Yon blokaj nan yon veso sangen ki rive akoz yon materyèl k ap deplase nan san an." },
-{ term: "anemia", en: "A condition in which the blood has too little hemoglobin or too few healthy
-red blood cells.", es: "Una condición en la que la sangre tiene poca hemoglobina o pocos glóbulos rojos
-sanos.", ht: "Yon pwoblèm kote san an pa gen ase emoglobin oswa globil wouj ki an sante." },
-{ term: "hypoxia", en: "A shortage of oxygen reaching the body's tissues.", es: "Una cantidad
-insuficiente de oxígeno que llega a los tejidos del cuerpo.", ht: "Lè tisi kò a pa resevwa ase oksijèn." },
-{ term: "hypoxemia", en: "A lower-than-normal level of oxygen in the blood.", es: "Un nivel de
-oxígeno en la sangre inferior al normal.", ht: "Lè nivo oksijèn nan san an pi ba pase nòmal." },
-{ term: "cyanosis", en: "A bluish or grayish color of the skin or lips that can indicate low oxygen
-or circulation problems.", es: "Una coloración azulada o grisácea de la piel o los labios que puede indicar
-problemas de oxígeno o circulación.", ht: "Lè po a oswa bouch yo pran yon koulè ble oswa gri, sa ki ka montre
-pwoblèm oksijèn oswa sikilasyon san." },
-{ term: "syncope", en: "A temporary loss of consciousness, commonly called fainting.", es: "Una
-pérdida temporal del conocimiento, comúnmente llamada desmayo.", ht: "Lè yon moun pèdi konesans pou yon ti tan,
-yo rele sa endispoze." },
-{ term: "vertigo", en: "A sensation that you or your surroundings are spinning or moving.", es: "La
-sensación de que usted o su entorno están girando o moviéndose.", ht: "Lè ou santi ou menm oswa anviwònman ou
-ap vire oswa deplase." },
-{ term: "paresthesia", en: "An unusual sensation such as tingling, pins and needles, or numbness.",
-es: "Una sensación inusual como hormigueo, pinchazos o entumecimiento.", ht: "Yon sansasyon dwòl tankou
-pikotman, pike, oswa pèt sansasyon." },
-{ term: "neuropathy", en: "Damage or dysfunction of nerves that can cause pain, weakness, or
-numbness.", es: "Daño o alteración de los nervios que puede causar dolor, debilidad o entumecimiento.", ht:
-"Domaj oswa pwoblèm nan nè yo ki ka lakòz doulè, feblès oswa pèt sansasyon." },
-{ term: "seizure", en: "A sudden episode of abnormal electrical activity in the brain.", es: "Un
-episodio repentino de actividad eléctrica anormal en el cerebro.", ht: "Yon epizòd toudenkou kote aktivite
-elektrik nan sèvo a vin pa nòmal." },
-{ term: "delirium", en: "A sudden change in attention and awareness that can cause confusion.", es:
-"Un cambio repentino en la atención y la conciencia que puede causar confusión.", ht: "Yon chanjman toudenkou
-nan atansyon ak konsyans ki ka lakòz konfizyon." },
-{ term: "cognitive impairment", en: "Difficulty with mental abilities such as memory, attention, or
-reasoning.", es: "Dificultad con capacidades mentales como la memoria, la atención o el razonamiento.", ht:
-"Difikilte ak kapasite mantal tankou memwa, atansyon oswa rezònman." },
-{ term: "dysphagia", en: "Difficulty swallowing food, liquids, or pills.", es: "Dificultad para
-tragar alimentos, líquidos o pastillas.", ht: "Difikilte pou vale manje, likid oswa grenn medikaman." },
-{ term: "dyspnea", en: "Difficulty or discomfort when breathing.", es: "Dificultad o molestia al
-respirar.", ht: "Difikilte oswa malèz lè yon moun ap respire." },
-{ term: "apnea", en: "A temporary pause in breathing.", es: "Una pausa temporal en la
-respiración.", ht: "Lè respirasyon an kanpe pou yon ti tan." },
-{ term: "tachypnea", en: "Breathing faster than normal.", es: "Respirar más rápido de lo normal.",
-ht: "Lè yon moun ap respire pi vit pase nòmal." },
-{ term: "bradypnea", en: "Breathing more slowly than normal.", es: "Respirar más lentamente de lo
-normal.", ht: "Lè yon moun ap respire pi dousman pase nòmal." },
-{ term: "palpitations", en: "The feeling that your heart is racing, pounding, or skipping beats.",
-es: "La sensación de que el corazón late rápido, fuerte o de forma irregular.", ht: "Lè ou santi kè ou ap bat
-vit, fò, oswa li sote batman." },
-{ term: "arrhythmia", en: "An irregular or abnormal heartbeat.", es: "Un latido cardíaco irregular
-o anormal.", ht: "Yon bat kè ki pa regilye oswa ki pa nòmal." },
-{ term: "hyperglycemia", en: "A higher-than-normal level of sugar in the blood.", es: "Un nivel de
-azúcar en la sangre más alto de lo normal.", ht: "Lè nivo sik nan san an pi wo pase nòmal." },
-{ term: "hypoglycemia", en: "A lower-than-normal level of sugar in the blood.", es: "Un nivel de
-azúcar en la sangre más bajo de lo normal.", ht: "Lè nivo sik nan san an pi ba pase nòmal." },
-{ term: "electrolyte imbalance", en: "An abnormal level of minerals in the blood that help the body
-function.", es: "Un nivel anormal de minerales en la sangre que ayudan al cuerpo a funcionar.", ht: "Lè nivo
-mineral nan san an pa nòmal, sa ki ka afekte fason kò a fonksyone." },
-{ term: "dehydration", en: "When the body loses more fluid than it takes in.", es: "Cuando el
-cuerpo pierde más líquido del que recibe.", ht: "Lè kò a pèdi plis likid pase kantite li resevwa." },
-{ term: "fluid overload", en: "When too much fluid builds up in the body.", es: "Cuando se acumula
-demasiado líquido en el cuerpo.", ht: "Lè twòp likid akimile nan kò a." },
-{ term: "renal", en: "Related to the kidneys.", es: "Relacionado con los riñones.", ht: "Ki gen
-rapò ak ren yo." },
-{ term: "hepatic", en: "Related to the liver.", es: "Relacionado con el hígado.", ht: "Ki gen rapò
-ak fwa a." },
-{ term: "cardiac", en: "Related to the heart.", es: "Relacionado con el corazón.", ht: "Ki gen rapò
-ak kè a." },
-{ term: "pulmonary", en: "Related to the lungs.", es: "Relacionado con los pulmones.", ht: "Ki gen
-rapò ak poumon yo." },
-{ term: "gastrointestinal", en: "Related to the stomach and intestines.", es: "Relacionado con el
-estómago y los intestinos.", ht: "Ki gen rapò ak lestomak ak trip yo." },
-{ term: "musculoskeletal", en: "Related to muscles, bones, joints, and supporting tissues.", es:
-"Relacionado con los músculos, huesos, articulaciones y tejidos de soporte.", ht: "Ki gen rapò ak misk, zo,
-jwenti ak tisi ki soutni yo." },
-{ term: "subcutaneous", en: "Located or administered under the skin.", es: "Ubicado o administrado
-debajo de la piel.", ht: "Ki sitiye oswa yo bay anba po a." },
-{ term: "intravenous", en: "Given directly into a vein.", es: "Administrado directamente en una
-vena.", ht: "Yo bay li dirèkteman nan yon venn." },
-{ term: "intramuscular", en: "Given into a muscle.", es: "Administrado en un músculo.", ht: "Yo bay
-li nan yon misk." },
-{ term: "oral administration", en: "Taking medicine by mouth.", es: "Tomar un medicamento por la
-boca.", ht: "Pran medikaman nan bouch." },
-{ term: "topical", en: "Applying a medicine directly to the outside of the body.", es: "Aplicar un
-medicamento directamente en el exterior del cuerpo.", ht: "Aplike yon medikaman dirèkteman sou deyò kò a." },
-{ term: "invasive procedure", en: "A medical procedure that enters the body, often through an
-incision or instrument.", es: "Un procedimiento médico que entra en el cuerpo, a menudo mediante una incisión o
-instrumento.", ht: "Yon pwosedi medikal ki antre nan kò a, souvan atravè yon koupe oswa yon enstriman." },
-{ term: "noninvasive", en: "A test or procedure that does not enter the body.", es: "Una prueba o
-procedimiento que no entra en el cuerpo.", ht: "Yon tès oswa pwosedi ki pa antre andedan kò a." },
-{ term: "histology", en: "The study of tissues under a microscope.", es: "El estudio de los tejidos
-bajo un microscopio.", ht: "Etid tisi yo anba mikwoskòp." },
-{ term: "radiology", en: "The medical field that uses imaging to help diagnose and monitor
-conditions.", es: "La especialidad médica que utiliza imágenes para diagnosticar y vigilar condiciones.", ht:
-"Domèn medikal ki sèvi ak imaj pou ede dekouvri ak kontwole pwoblèm sante." },
-{ term: "contrast agent", en: "A substance used during certain imaging tests to make structures
-easier to see.", es: "Una sustancia utilizada en ciertas pruebas de imagen para visualizar mejor las
-estructuras.", ht: "Yon sibstans yo itilize nan kèk tès imaj pou fè estrikti yo parèt pi klè." },
-{ term: "incidental finding", en: "An unexpected result discovered during a test performed for
-another reason.", es: "Un hallazgo inesperado descubierto durante una prueba realizada por otro motivo.", ht:
-"Yon rezilta yo dekouvri san yo pa t ap chèche li pandan yon tès pou yon lòt rezon." },
-{ term: "clinical significance", en: "The importance of a finding for a person's health or medical
-care.", es: "La importancia de un hallazgo para la salud o atención médica de una persona.", ht: "Enpòtans yon
-rezilta genyen pou sante oswa swen medikal yon moun." },
-{ term: "normal range", en: "The range of results typically found in a defined healthy reference
-group.", es: "El intervalo de resultados que suele encontrarse en un grupo de referencia saludable definido.",
-ht: "Entèval rezilta yo jwenn anjeneral nan yon gwoup referans ki an sante." },
-{ term: "borderline result", en: "A result near the cutoff between normal and abnormal; its meaning
-depends on the test.", es: "Un resultado cercano al límite entre lo normal y lo anormal; su significado depende
-de la prueba.", ht: "Yon rezilta ki toupre limit ant nòmal ak anòmal; siyifikasyon li depann de tès la." },
-{ term: "reference range", en: "A range used to help interpret a test result; it does not always
-define health or disease.", es: "Un intervalo que ayuda a interpretar un resultado; no siempre determina si
-existe salud o enfermedad.", ht: "Yon entèval ki ede esplike yon rezilta tès; li pa toujou detèmine si yon moun
-an sante oswa malad." },
-{ term: "differential", en: "A blood test measurement that counts different types of white blood
-cells.", es: "Un análisis de sangre que cuenta los distintos tipos de glóbulos blancos.", ht: "Yon tès san ki
-konte diferan kalite globil blan." },
-{ term: "complete blood count", en: "A blood test that measures different blood cells and related
-values.", es: "Un análisis de sangre que mide diferentes células sanguíneas y valores relacionados.", ht: "Yon
-tès san ki mezire diferan selil san yo ak lòt valè ki gen rapò." },
-{ term: "metabolic panel", en: "A group of blood tests that checks substances related to organ
-function and metabolism.", es: "Un grupo de análisis de sangre que evalúa sustancias relacionadas con la
-función de los órganos y el metabolismo.", ht: "Yon gwoup tès san ki tcheke sibstans ki gen rapò ak fonksyon
-ògàn yo ak metabolis." },
-{ term: "metabolism", en: "The chemical processes the body uses to turn food into energy and
-maintain itself.", es: "Los procesos químicos que el cuerpo utiliza para convertir alimentos en energía y
-mantenerse.", ht: "Pwosesis chimik kò a itilize pou transfòme manje an enèji epi kenbe kò a ap fonksyone." },
-{ term: "therapeutic window", en: "The range between a medicine's effective dose and a dose that
-may cause harm.", es: "El intervalo entre la dosis eficaz de un medicamento y una dosis que puede causar
-daño.", ht: "Entèval ant dòz medikaman ki efikas la ak dòz ki ka lakòz domaj." },
-{ term: "placebo", en: "A treatment with no active ingredient used as a comparison in research.",
-es: "Un tratamiento sin ingrediente activo que se utiliza como comparación en investigaciones.", ht: "Yon
-tretman ki pa gen engredyan aktif yo itilize pou konpare rezilta nan rechèch." },
-{ term: "placebo effect", en: "A change in how someone feels after receiving a treatment because of
-expectations or context.", es: "Un cambio en cómo se siente una persona después de recibir un tratamiento
-debido a sus expectativas o al contexto.", ht: "Yon cambio en cómo se siente una persona después de recibir un
-tratamiento debido a sus expectativas o al contexto." },
-{ term: "clinical trial", en: "A research study that evaluates a medical treatment, test, or
-intervention in people.", es: "Un estudio de investigación que evalúa un tratamiento, prueba o intervención
-médica en personas.", ht: "Yon etid rechèch ki evalye yon tretman, tès oswa entvansyon medikal sou moun." },
-{ term: "randomized controlled trial", en: "A study that assigns participants to groups by chance
-to compare treatments fairly.", es: "Un estudio que asigna participantes a grupos al azar para comparar
-tratamientos de manera justa.", ht: "Yon etid kote yo mete patisipan yo nan gwoup pa aza pou konpare tretman yo
-yon fason ki jis." },
-{ term: "evidence-based medicine", en: "Medical care guided by the best available research,
-clinical expertise, and patient needs.", es: "Atención médica guiada por la mejor investigación disponible, la
-experiencia clínica y las necesidades del paciente.", ht: "Swen medikal ki baze sou pi bon rechèch ki disponib,
-eksperyans klinik ak bezwen pasyan an." },
-{ term: "informed decision", en: "A choice made after understanding the available options,
-benefits, risks, and uncertainties.", es: "Una decisión tomada después de comprender las opciones, los
-beneficios, los riesgos y las incertidumbres.", ht: "Yon desizyon yon moun pran apre li fin konprann opsyon yo,
-avantaj yo, risk yo ak sa ki pa sèten." },
-{ term: "shared decision-making", en: "A process in which a patient and healthcare professional
-make a care decision together.", es: "Un proceso en el que el paciente y el profesional de salud deciden juntos
-sobre la atención.", ht: "Yon pwosesis kote pasyan an ak pwofesyonèl sante a pran desizyon sou swen an ansanm."
-},
-{ term: "informed refusal", en: "Choosing not to accept a recommended treatment after understanding
-its risks and benefits.", es: "Decidir no aceptar un tratamiento recomendado después de comprender sus riesgos
-y beneficios.", ht: "Chwazi pa aksepte yon tretman yo rekòmande apre ou fin konprann risk ak avantaj li yo." },
-{ term: "capacity", en: "The ability to understand information and make a particular healthcare
-decision.", es: "La capacidad de comprender información y tomar una decisión médica específica.", ht: "Kapasite
-pou konprann enfòmasyon epi pran yon desizyon medikal espesifik." },
-{ term: "advance directive", en: "A document explaining someone's healthcare wishes if they cannot
-communicate them later.", es: "Un documento que explica los deseos médicos de una persona si después no puede
-comunicarlos.", ht: "Yon dokiman ki esplike volonte yon moun sou swen medikal si li pa kapab kominike yo pita."
-},
-{ term: "discharge", en: "Permission to leave a hospital or healthcare facility after care.", es:
-"Autorización para salir de un hospital o centro de salud después de recibir atención.", ht: "Pèmisyon pou kite
-lopital oswa etablisman sante apre ou fin resevwa swen." },
-{ term: "follow-up", en: "A later appointment or contact to check progress after treatment or a
-visit.", es: "Una cita o contacto posterior para revisar el progreso después de un tratamiento o visita.", ht:
-"Yon randevou oswa kontak pita pou verifye pwogrè apre yon tretman oswa vizit." },
-{ term: "referral", en: "A request for a patient to see another healthcare professional or
-specialist.", es: "Una solicitud para que el paciente consulte a otro profesional de salud o especialista.",
-ht: "Yon demann pou yon pasyan al wè yon lòt pwofesyonèl sante oswa espesyalis." },
-{ term: "prior authorization", en: "Approval an insurance plan may require before covering certain
-care or medicine.", es: "La aprobación que un seguro puede exigir antes de cubrir ciertos servicios o
-medicamentos.", ht: "Apwobasyon yon asirans ka mande anvan li peye pou kèk swen oswa medikaman." },
-{ term: "deductible", en: "The amount you pay for covered healthcare before insurance starts paying
-under the plan's rules.", es: "La cantidad que usted paga por la atención cubierta antes de que el seguro
-comience a pagar según las reglas del plan.", ht: "Bakntite lajan ou peye pou swen ki kouvri yo anvan asirans
-lan kòmanse peye selon règ plan an." },
-{ term: "copayment", en: "A fixed amount you pay for a covered healthcare service or medicine.",
-es: "Una cantidad fija que usted paga por un servicio médico o medicamento cubierto.", ht: "Yon kantite lajan
-fiks ou peye pou yon sèvis sante oswa medikaman asirans lan kouvri." },
-{ term: "coinsurance", en: "The percentage of covered healthcare costs you pay after meeting your
-deductible, under your plan's rules.", es: "El porcentaje de los costos médicos cubiertos que usted paga
-después de cumplir con el deducible, según las reglas de su plan.", ht: "Pousantaj depans swen sante ki kouvri
-ou peye apre ou fin satisfè franchiz la, selon règ plan ou." },
-{ bounds_pocket_maximum: "The most you pay for covered in-network services during a plan year,
-subject to plan rules.", es: "La cantidad máxima que paga por servicios cubiertos dentro de la red durante el
-año del plan, según sus reglas.", ht: "Pi gwo kantite lajan ou peye pou sèvis ki kouvri nan rezo a pandan ane
-plan an, selon règ li yo." },
-{ term: "in-network", en: "Healthcare professionals or facilities that have a contract with your
-insurance plan.", es: "Profesionales o centros de salud que tienen un contrato con su seguro médico.", ht:
-"Pwofesyonèl oswa etablisman sante ki gen yon kontra ak plan asirans ou." },
-{ term: "out-of-network", en: "Healthcare professionals or facilities that do not have a contract
-with your insurance plan.", es: "Profesionales o centros de salud que no tienen un contrato con su seguro
-médico.", ht: "Pwofesyonèl oswa etablisman sante ki pa gen yon kontra ak plan asirans ou." },
-{ term: "medical necessity", en: "A healthcare service considered appropriate for diagnosing or
-treating a health condition under applicable standards and coverage rules.", es: "Un servicio médico
-considerado apropiado para diagnosticar o tratar una condición según las normas y reglas de cobertura
-aplicables.", ht: "Yon sèvis sante yo konsidere apwopriye pou dekouvri oswa trete yon pwoblèm sante selon nòm
-ak règ kouvèti ki aplikab yo." },
-{ term: "triage", en: "Sorting patients by how urgently they need medical attention.", es:
-"Clasificar a los pacientes según la urgencia con la que necesitan atención médica.", ht: "Klase pasyan yo
-selon jan yo bezwen swen medikal ijan." },
-{ term: "stable condition", en: "A condition that is not changing significantly at the moment; it
-does not always mean harmless.", es: "Una condición que no está cambiando significativamente en ese momento; no
-siempre significa que sea inofensiva.", ht: "Yon pwoblèm sante ki pa chanje anpil nan moman an; sa pa toujou
-vle di li pa danjere." },
-{ term: "critical condition", en: "A very serious condition that may threaten vital body
-functions.", es: "Una condición muy grave que puede poner en peligro funciones vitales del cuerpo.", ht: "Yon
-pwoblèm sante ki grav anpil epi ki ka menase fonksyon vital kò a." },
-{ term: "guarded prognosis", en: "A medical outlook that is uncertain or concerning.", es: "Un
-pronóstico médico incierto o preocupante.", ht: "Yon previzyon medikal ki pa sèten oswa ki bay enkyetid." },
-{ term: "full code", en: "A care status indicating that resuscitation and other emergency
-life-support measures may be attempted if needed.", es: "Un estado de atención que indica que se pueden
-intentar maniobras de reanimación y otras medidas de soporte vital de emergencia si son necesarias.", ht: "Yon
-estati swen ki endike yo ka eseye reyanimasyon ak lòt mezi ijans pou sipòte lavi si sa nesesè." },
-{ term: "do not resuscitate", en: "A medical order not to attempt CPR if a person's heart stops or
-they stop breathing.", es: "Una orden médica de no intentar la reanimación cardiopulmonar si el corazón de una
-persona se detiene o deja de respirar.", ht: "Yon lòd medikal pou pa eseye reyanimasyon kadyopilmonè si kè yon
-moun sispann bat oswa li sispann respire." },
-{ term: "empiric treatment", en: "Treatment started based on the most likely cause before all test
-results are available.", es: "Tratamiento que comienza según la causa más probable antes de disponer de todos
-los resultados.", ht: "Tretman yo kòmanse dapre kòz yo panse ki pi pwobab anvan tout rezilta tès yo disponib."
-},
-{ term: "refractory", en: "Not responding adequately to a treatment.", es: "Que no responde
-adecuadamente a un tratamiento.", ht: "Ki pa reponn ase byen ak yon tretman." },
-{ term: "resistant", en: "Not easily affected by a medicine or treatment that would normally
-work.", es: "Que no se ve afectado fácilmente por un medicamento o tratamiento que normalmente funcionaría.",
-ht: "Ki pa fasil afekte pa yon medikaman oswa tretman ki ta dwe mache nòmalman." },
-{ term: "remodeling", en: "Changes in the size, shape, or structure of tissue or an organ over
-time.", es: "Cambios en el tamaño, la forma o la estructura de un tejido u órgano con el tiempo.", ht:
-"Chanjman nan gwosè, fòm oswa estrikti yon tisi oswa ògàn sou tan." },
-{ term: "proliferation", en: "An increase in the number of cells through cell division.", es: "Un
-aumento del número de células mediante la división celular.", ht: "Ogmantasyon kantite selil atravè divizyon
-selilè." },
-{ term: "necrosis", en: "The death of living cells or tissues due to disease or injury.", es: "La
-muerte de células o tejidos vivos debido a una enfermedad o lesión.", ht: "Lanmò tisi oswa selil nan kò a akòz
-yon maladi oswa yon blesi." },
-{ term: "fibrosis", en: "The buildup of scar-like connective tissue in an organ or other area.",
-es: "La acumulación de tejido conectivo parecido a una cicatriz en un órgano u otra zona.", ht: "Lè tisi
-konjonktif ki sanble ak mak blesi akimile nan yon ògàn oswa lòt zòn." },
-{ term: "calcification", en: "The buildup of calcium salts in tissue where they may not normally be
-present.", es: "La acumulación de sales de calcio en tejidos donde normalmente podrían no estar presentes.",
-ht: "Lè sèl kalsyòm akimile nan tisi kote yo ka pa nòmalman prezan." },
-{ term: "atrophic", en: "Relating to tissue or an organ that has become smaller or thinner.", es:
-"Relacionado con un tejido u órgano que se ha vuelto más pequeño o delgado.", ht: "Ki gen rapò ak yon tisi oswa
-ògàn ki vin pi piti oswa pi mens." },
-{ term: "acute exacerbation", en: "A sudden worsening of an existing health condition.", es: "Un
-empeoramiento repentino de una condición de salud existente.", ht: "Lè yon pwoblèm sante ki deja la vin pi mal
-toudenkou." },
-{ term: "clinical correlation", en: "Comparing a test or imaging finding with symptoms,
-examination, and medical history to understand its meaning.", es: "Comparar un hallazgo de una prueba o imagen
-con los síntomas, el examen y el historial médico para entender su significado.", ht: "Konpare rezilta yon tès
-oswa imaj ak sentòm, egzamen ak istwa medikal pou konprann siyifikasyon li." },
-{ term: "sepsis", en: "A severe, life-threatening body reaction to an infection.", es: "Una
-reacción corporal grave y potencialmente mortal a una infección.", ht: "Yon reyaksyon kò a ki grav anpil epi ki
-ka touye moun akòz yon enfeksyon." },
-{ term: "bradycardia", en: "An unusually slow heart rate.", es: "Un ritmo cardíaco inusualmente
-lento.", ht: "Yon ritm kè ki pi dousman pase nòmal." },
-{ term: "tachycardia", en: "An unusually fast heart rate.", es: "Un ritmo cardíaco inusualmente
-rápido.", ht: "Yon ritm kè ki pi rapid pase nòmal." },
-{ term: "impressive", en: "Deeply concerning or severe (not a good thing).", es: "Muy preocupante o
-grave (no es algo bueno).", ht: "Ki bay gwo enkyetid oswa ki grav (sa pa vle di yon bon bagay)." },
-{ term: "grossly intact", en: "Appearing generally healthy and working fine during a basic exam.",
-es: "Que parece generalmente sano y funciona bien en un examen básico.", ht: "Ki parèt an sante an jeneral epi
-ki mache byen nan yon examen senp." },
-{ term: "occult", en: "Hidden or invisible to the naked eye.", es: "Oculto o invisible a simple
-vista.", ht: "Kache oswa ki pa parèt devan je." },
-{ term: "relapse", en: "The return of symptoms or sickness after getting better.", es: "El regreso
-de los síntomas o la enfermedad después de mejorar.", ht: "Lè sentòm yo oswa maladi a tounen apre ou te fin pi
-byen." },
-{ term: "intubation", en: "Placing a flexible tube down the throat to help breathing.", es:
-"Colocar un tubo flexible en las vías respiratorias para ayudar a respirar.", ht: "Mete yon tib fleksib nan
-pasay lè a pou ede yon moun respire." },
-{ term: "outpatient", en: "A treatment or visit where you leave the hospital on the same day.", es:
-"Un tratamiento o visita donde se va del hospital el mismo día.", ht: "Yon tretman oswa vizit kote ou kite
-lopital la menm jou a." },
-{ term: "inpatient", en: "Staying overnight in the hospital for care.", es: "Permanecer
-hospitalizado durante la noche para recibir atención.", ht: "Lè yon moun rete pase nwit lan lopital la pou yo
-ba li swen." },
-{ term: "adverse effect", en: "An unexpected, harmful, or bad reaction to a treatment.", es: "Una
-reacción inesperada, dañina o mala a un tratamiento.", ht: "Yon move reyaksyon ki parèt sibit epi ki bay
-pwoblèm apre yon tretman." },
-{ term: "systemic", en: "Affecting the entire body instead of just one spot.", es: "Que afecta a
-todo el cuerpo en lugar de a un solo lugar.", ht: "Ki touche tout kò a nèt olye li rete yon sèl kote." },
-{ term: "localized", en: "Staying in one specific area of the body without spreading.", es: "Que se
-mantiene en un área específica del cuerpo sin extenderse.", ht: "Ki rete nan yon sèl zòn nan kò a san li pa
-gaye." },
-{ term: "ambulatory", en: "Able to walk around and not confined to a bed.", es: "Capaz de caminar y
-que no está confinado a una cama.", ht: "Ki kapab mache, ki pa oblije rete nan yon kabann." },
-{ term: "febrile", en: "Having or showing symptoms of a fever.", es: "Que tiene fiebre o presenta
-síntomas de ella.", ht: "Lè yon moun gen lafyèv oswa li montre sentòm lafyèv." },
-{ term: "cognitive", en: "Relating to mental activities like thinking, reasoning, and
-remembering.", es: "Relacionado con las actividades mentales como pensar, razonar y recordar.", ht: "Ki gen
-rapò ak aktivite nan lespri a tankou reflechi, rezone, ak sonje." },
-{ term: "congestion", en: "An abnormal buildup of fluid, such as blood in vessels or mucus in the
-nose.", es: "Una acumulación anormal de líquido, como sangre en los vasos o mucosidad en la nariz.", ht: "Yon
-kantite likid ki rasanble yon kote yon fason ki pa nòmal, tankou san nan veso sangen oswa glè nan nen." }
+{ term: "informed consent", en: "You completely understand the medical choices, risks, and give permission.", es: "Usted entiende completamente las opciones y riesgos médicos, y da su permiso.", ht: "Ou konprann tout chwa ak risk medikal yo nèt, epi ou bay pèmisyon." },
+{ term: "differential diagnosis", en: "A list of possible illnesses that could explain your symptoms.", es: "Una lista de posibles enfermedades que podrían explicar sus síntomas.", ht: "Yon lis maladi posib ki ta ka esplike sentòm ou yo." },
+{ term: "etiology", en: "The cause or origin of a disease.", es: "La causa u origen de una enfermedad.", ht: "Kòz oswa orijin yon maladi." },
+{ term: "pathology", en: "The study of diseases and the changes they cause in the body.", es: "El estudio de las enfermedades y los cambios que causan en el cuerpo.", ht: "Etid maladi yo ak chanjman yo lakòz nan kò a." },
+{ term: "comorbidity", en: "Having two or more health conditions at the same time.", es: "Tener dos o más problemas de salud al mismo tiempo.", ht: "Lè yon moun gen de oswa plis pwoblèm sante an menm tan." },
+{ term: "complication", en: "An additional health problem that develops during an illness or treatment.", es: "Un problema de salud adicional que aparece durante una enfermedad o tratamiento.", ht: "Yon lòt pwoblèm sante ki devlope pandan yon maladi oswa tretman." },
+{ term: "deterioration", en: "A worsening of someone's health or condition.", es: "Un empeoramiento de la salud o condición de una persona.", ht: "Lè sante oswa kondisyon yon moun vin pi mal." },
+{ term: "exacerbation", en: "A period when an illness or its symptoms become worse.", es: "Un período en el que una enfermedad o sus síntomas empeoran.", ht: "Yon peryòd kote yon maladi oswa sentòm li yo vin pi mal." },
+{ term: "remission", en: "A period when signs or symptoms of a disease decrease or disappear.", es: "Un período en el que los signos o síntomas de una enfermedad disminuyen o desaparecen.", ht: "Yon peryòd kote siy oswa sentòm yon maladi diminye oswa disparèt." },
+{ term: "recurrence", en: "The return of a disease or condition after it improved or disappeared.", es: "El regreso de una enfermedad o condición después de mejorar o desaparecer.", ht: "Lè yon maladi oswa pwoblèm sante retounen apre li te amelyore oswa disparèt." },
+{ term: "chronic condition", en: "A health problem that lasts a long time and may need ongoing care.", es: "Un problema de salud que dura mucho tiempo y puede requerir atención continua.", ht: "Yon pwoblèm sante ki dire lontan epi ki ka bezwen swen kontinyèl." },
+{ term: "acute condition", en: "A condition that begins suddenly or develops over a short period.", es: "Una condición que comienza de repente o se desarrolla en poco tiempo.", ht: "Yon pwoblèm sante ki kòmanse sibitman oswa devlope nan yon ti tan." },
+{ term: "idiopathic", en: "A condition or illness that arises spontaneously with no known cause.", es: "Una enfermedad que aparece de forma espontánea sin una causa conocida.", ht: "Yon maladi ki parèt san yo pa konnen sa ki lakòz li." },
+{ term: "asymptomatic", en: "Having a condition or illness but showing no signs or symptoms of it.", es: "Tener una enfermedad pero no presentar ningún signo ni síntoma de ella.", ht: "Lè yon moun gen yon maladi men li pa bay okenn siy oswa sentòm." },
+{ term: "symptomatic", en: "Showing signs or symptoms of a health condition.", es: "Presentar signos o síntomas de una condición de salud.", ht: "Lè yon moun montre siy oswa sentòm yon pwoblèm sante." },
+{ term: "prognosis", en: "The doctor's professional guess on how you will recover.", es: "La predicción profesional del médico sobre cómo se recuperará.", ht: "Prediksyon pwofesyonèl doktè a sou jan ou pral geri." },
+{ term: "etiological factor", en: "Something that contributes to causing a disease.", es: "Algo que contribuye a causar una enfermedad.", ht: "Yon bagay ki kontribye nan lakòz yon maladi." },
+{ term: "predisposition", en: "A greater likelihood of developing a particular condition.", es: "Una mayor probabilidad de desarrollar una condición específica.", ht: "Yon pi gwo chans pou devlope yon pwoblèm sante espesifik." },
+{ term: "risk factor", en: "Something that increases the chance of developing a disease or injury.", es: "Algo que aumenta la posibilidad de desarrollar una enfermedad o lesión.", ht: "Yon bagay ki ogmante chans pou devlope yon maladi oswa blesi." },
+{ term: "preventive care", en: "Healthcare intended to prevent illness or detect problems early.", es: "Atención médica destinada a prevenir enfermedades o detectar problemas temprano.", ht: "Swen medikal ki fèt pou anpeche maladi oswa dekouvri pwoblèm bonè." },
+{ term: "screening", en: "Testing people for a condition before they notice symptoms.", es: "Realizar pruebas para detectar una condición antes de que aparezcan síntomas.", ht: "Fè tès pou chèche yon pwoblèm sante anvan sentòm yo parèt." },
+{ term: "false positive", en: "A test result that suggests a condition is present when it is not.", es: "Un resultado que indica una condición cuando en realidad no existe.", ht: "Yon rezilta tès ki montre yon pwoblèm sante ki pa la vre." },
+{ term: "false negative", en: "A test result that misses a condition that is actually present.", es: "Un resultado que no detecta una condición que sí está presente.", ht: "Yon rezilta tès ki pa detekte yon pwoblèm sante ki la vre." },
+{ term: "sensitivity", en: "How well a test identifies people who truly have a condition.", es: "Qué tan bien una prueba identifica a las personas que realmente tienen una condición.", ht: "Nan ki nivo yon tès idantifye moun ki vrèman gen yon pwoblèm sante." },
+{ term: "specificity", en: "How well a test identifies people who do not have a condition.", es: "Qué tan bien una prueba identifica a las personas que no tienen una condición.", ht: "Nan ki nivo yon tès idantifye moun ki pa gen yon pwoblèm sante." },
+{ term: "incidence", en: "How often a disease occurs in a specific group of people over a set time.", es: "La frecuencia con la que ocurre una enfermedad en un grupo específico de personas durante un tiempo determinado.", ht: "Konbyen fwa yon maladi rive nan yon gwoup moun espesifik pandan yon peryòd tan." },
+{ term: "prevalence", en: "The total number of people in a population who have a condition at a given time.", es: "El número total de personas de una población que tienen una condición en un momento determinado.", ht: "Kantite total moun nan yon popilasyon ki gen yon pwoblèm sante nan yon moman espesifik." },
+{ term: "morbidity", en: "Illness or the burden of health problems in a population.", es: "Enfermedad o la carga de problemas de salud en una población.", ht: "Maladi oswa kantite pwoblèm sante nan yon popilasyon." },
+{ term: "mortality", en: "Deaths within a population during a specific period.", es: "Las muertes dentro de una población durante un período específico.", ht: "Kantite lanmò nan yon popilasyon pandan yon peryòd espesifik." },
+{ term: "sequela", en: "A lasting problem that remains after an illness or injury.", es: "Un problema duradero que queda después de una enfermedad o lesión.", ht: "Yon pwoblèm ki rete apre yon maladi oswa blesi." },
+{ term: "remission induction", en: "Treatment intended to make a disease enter remission.", es: "Tratamiento destinado a lograr que una enfermedad entre en remisión.", ht: "Tretman ki fèt pou fè yon maladi antre nan remisyon." },
+{ term: "iatrogenic", en: "Caused unintentionally by medical care or treatment.", es: "Causado involuntariamente por la atención o el tratamiento médico.", ht: "Yon pwoblèm ki rive san entansyon akoz swen oswa tretman medikal." },
+{ term: "nosocomial infection", en: "An infection acquired while receiving care in a healthcare facility.", es: "Una infección adquirida mientras se recibe atención en un centro de salud.", ht: "Yon enfeksyon yon moun pran pandan l ap resevwa swen nan yon etablisman sante." },
+{ term: "iatrogenic complication", en: "A health problem caused unintentionally by a medical procedure or treatment.", es: "Un problema de salud causado involuntariamente por un procedimiento o tratamiento médico.", ht: "Yon pwoblèm sante ki rive san entansyon akoz yon pwosedi oswa tretman medikal." },
+{ term: "contraindication", en: "A specific reason why a medicine or treatment should not be used because it is dangerous for you.", es: "Una razón específica por la cual un medicamento o tratamiento no debe usarse porque es peligroso para usted.", ht: "Yon rezon espesyal ki fè yo pa dwe sèvi ak yon medikaman oswa yon tretman paske li danjere pou ou." },
+{ term: "indication", en: "A medical reason for using a medicine, test, or treatment.", es: "Una razón médica para utilizar un medicamento, prueba o tratamiento.", ht: "Yon rezon medikal pou itilize yon medikaman, tès oswa tretman." },
+{ term: "therapeutic", en: "Related to treating or improving a health condition.", es: "Relacionado con el tratamiento o la mejora de una condición de salud.", ht: "Ki gen rapò ak tretman oswa amelyorasyon yon pwoblèm sante." },
+{ term: "palliative care", en: "Medical care focused on providing relief from pain and stress, rather than curing the illness.", es: "Atención médica enfocada en aliviar el dolor y el estrés, en lugar de curar la enfermedad.", ht: "Swen medikal ki la pou soulaje doulè ak estrès, olye pou yo geri maladi a." },
+{ term: "curative treatment", en: "Treatment intended to eliminate a disease rather than only manage its symptoms.", es: "Tratamiento destinado a eliminar una enfermedad en lugar de solo controlar sus síntomas.", ht: "Tretman ki fèt pou elimine yon maladi olye pou sèlman kontwole sentòm li yo." },
+{ term: "maintenance therapy", en: "Ongoing treatment intended to keep a condition controlled or prevent its return.", es: "Tratamiento continuo destinado a mantener una condición controlada o evitar que regrese.", ht: "Tretman kontinyèl ki fèt pou kenbe yon pwoblèm sante anba kontwòl oswa anpeche li retounen." },
+{ term: "titration", en: "Adjusting a medicine dose gradually to find the appropriate amount.", es: "Ajustar gradualmente la dosis de un medicamento para encontrar la cantidad adecuada.", ht: "Ajiste dòz yon medikaman piti piti pou jwenn kantite ki apwopriye a." },
+{ term: "dosage", en: "The amount of medicine taken and how often it is taken.", es: "La cantidad de medicamento que se toma y la frecuencia con que se toma.", ht: "Kantite medikaman yon moun pran ak konbyen fwa li pran li." },
+{ term: "adherence", en: "How closely someone follows an agreed treatment plan.", es: "Qué tan bien una persona sigue un plan de tratamiento acordado.", ht: "Nan ki nivo yon moun suiv plan tretman yo te dakò sou li." },
+{ term: "drug interaction", en: "When one medicine, food, or substance changes how another medicine works.", es: "Cuando un medicamento, alimento o sustancia cambia la forma en que funciona otro medicamento.", ht: "Lè yon medikaman, manje oswa lòt sibstans chanje fason yon lòt medikaman aji." },
+{ term: "side effect", en: "An unintended effect of a medicine or treatment, which may be harmful or harmless.", es: "Un efecto no deseado de un medicamento o tratamiento, que puede ser dañino o inofensivo.", ht: "Yon efè yon medikaman oswa tretman lakòz san se pa sa yo t ap chèche, ki ka danjere oswa pa danjere." },
+{ term: "allergic reaction", en: "An immune system response to something the body mistakenly treats as harmful.", es: "Una respuesta del sistema inmunitario a algo que el cuerpo identifica erróneamente como dañino.", ht: "Yon reyaksyon sistèm iminitè a fè kont yon bagay kò a panse ki danjere." },
+{ term: "anaphylaxis", en: "A severe allergic reaction that requires immediate emergency treatment.", es: "Una reacción alérgica grave que requiere tratamiento de emergencia inmediato.", ht: "Yon reyaksyon alèjik grav ki mande swen ijans touswit." },
+{ term: "inflammation", en: "The body's response to injury, infection, or irritation, often causing swelling or pain.", es: "La respuesta del cuerpo a una lesión, infección o irritación, que suele causar hinchazón o dolor.", ht: "Reyaksyon kò a devan yon blesi, enfeksyon oswa iritasyon, ki souvan lakòz anfle oswa doulè." },
+{ term: "infection", en: "When harmful microorganisms enter the body and multiply.", es: "Cuando microorganismos dañinos entran en el cuerpo y se multiplican.", ht: "Lè mikwo-òganis ki danjere antre nan kò a epi yo miltipliye." },
+{ term: "colonization", en: "When microorganisms live on or in the body without necessarily causing illness.", es: "Cuando microorganismos viven en el cuerpo sin causar necesariamente una enfermedad.", ht: "Lè mikwo-òganis rete sou oswa andedan kò a san yo pa nesesèman lakòz maladi." },
+{ term: "contagious", en: "Able to spread from one person to another.", es: "Que puede transmitirse de una persona a otra.", ht: "Ki kapab pase soti nan yon moun pou ale nan yon lòt." },
+{ term: "communicable disease", en: "A disease that can spread between people or through another source.", es: "Una enfermedad que puede propagarse entre personas o por otra fuente.", ht: "Yon maladi ki ka gaye ant moun oswa atravè yon lòt sous." },
+{ term: "incubation period", en: "The time between catching an infection and developing symptoms.", es: "El tiempo entre contraer una infección y desarrollar síntomas.", ht: "Tan ki pase ant lè yon moun pran enfeksyon an ak lè sentòm yo kòmanse." },
+{ term: "carrier", en: "A person or organism that carries a germ and may spread it without symptoms.", es: "Una persona u organismo que porta un microbio y puede transmitirlo sin presentar síntomas.", ht: "Yon moun oswa òganis ki pote yon mikwòb epi ki ka gaye li san sentòm." },
+{ term: "immunity", en: "The body's ability to defend itself against a particular infection or disease.", es: "La capacidad del cuerpo para defenderse de una infección o enfermedad específica.", ht: "Kapasite kò a pou defann tèt li kont yon enfeksyon oswa maladi espesifik." },
+{ term: "autoimmune", en: "Describing a condition in which the immune system attacks the body's own tissues.", es: "Describe una condición en la que el sistema inmunitario ataca los propios tejidos del cuerpo.", ht: "Ki dekri yon pwoblèm kote sistèm iminitè a atake pwòp tisi kò a." },
+{ term: "immunocompromised", en: "Having a weakened immune system that makes fighting infections harder.", es: "Tener un sistema inmunitario debilitado que dificulta combatir infecciones.", ht: "Lè sistèm iminitè yon moun fèb epi li gen plis difikilte pou konbat enfeksyon." },
+{ term: "benign", en: "Safe; not cancerous and not spreading.", es: "Seguro; no es canceroso y no se está extendiendo.", ht: "An sekirite; li pa kansè epi li pa gaye." },
+{ term: "malignant", en: "Dangerous, harmful, and cancerous.", es: "Peligroso, dañino y canceroso.", ht: "Ki danjere, ki bay pwoblèm, epi ki se kansè." },
+{ term: "metastasis", en: "The spread of a disease from one part of the body to another.", es: "La propagación de una enfermedad de una parte del cuerpo a otra.", ht: "Lè yon maladi gaye soti nan yon pati nan kò a pou ale nan yon lòt." },
+{ term: "tumor", en: "An abnormal mass of tissue that may be benign or malignant.", es: "Una masa anormal de tejido que puede ser benigna o maligna.", ht: "Yon gwoup tisi ki grandi yon fason ki pa nòmal epi ki ka pa kansè oswa kansè." },
+{ term: "neoplasm", en: "An abnormal growth of cells that forms new tissue.", es: "Un crecimiento anormal de células que forma tejido nuevo.", ht: "Yon kwasans selil ki pa nòmal ki fòme nouvo tisi." },
+{ term: "nodule", en: "A small lump or growth in tissue that needs interpretation based on its features.", es: "Un pequeño bulto o crecimiento en un tejido que debe evaluarse según sus características.", ht: "Yon ti boul oswa kwasans nan tisi ki bezwen evalyasyon selon karakteristik li yo." },
+{ term: "cyst", en: "A sac-like structure in the body that may contain fluid or other material.", es: "Una estructura en forma de saco que puede contener líquido u otro material.", ht: "Yon estrikti ki sanble ak yon ti sak nan kò a ki ka gen likid oswa lòt materyèl." },
+{ term: "atrophy", en: "The shrinking or wasting away of tissue or an organ.", es: "La reducción o pérdida de tamaño de un tejido u órgano.", ht: "Lè tisi oswa yon ògàn diminye nan gwosè oswa vin pi piti." },
+{ term: "hypertrophy", en: "An increase in the size of cells that makes a tissue or organ larger.", es: "Un aumento del tamaño de las células que hace que un tejido u órgano crezca.", ht: "Lè selil yo vin pi gwo epi sa fè yon tisi oswa ògàn vin pi gwo." },
+{ term: "ischemia", en: "Reduced blood flow to an area, which can limit its oxygen supply.", es: "Reducción del flujo sanguíneo a una zona, lo que puede limitar su suministro de oxígeno.", ht: "Lè san pa sikile ase nan yon zòn, sa ki ka diminye oksijèn li resevwa." },
+{ term: "infarction", en: "Tissue damage or death caused by a lack of blood supply.", es: "Daño o muerte del tejido causado por la falta de suministro de sangre.", ht: "Domaj oswa lanmò tisi ki rive paske li pa resevwa ase san." },
+{ term: "effusion", en: "An abnormal buildup of fluid in a body space, such as around a lung.", es: "Una acumulación anormal de líquido en un espacio del cuerpo, como alrededor de un pulmón.", ht: "Yon akimilasyon likid ki pa nòmal nan yon espas nan kò a, tankou bò kote yon poumon." },
+{ term: "hemorrhage", en: "Heavy or uncontrolled bleeding.", es: "Sangrado abundante o incontrolado.", ht: "Gwo senyen oswa senyen ki pa kontwole." },
+{ term: "thrombosis", en: "The formation of a blood clot inside a blood vessel.", es: "La formación de un coágulo de sangre dentro de un vaso sanguíneo.", ht: "Lè yon boul san fòme andedan yon veso sangen." },
+{ term: "embolism", en: "A blockage in a blood vessel caused by material traveling through the bloodstream.", es: "Una obstrucción de un vaso sanguíneo causada por material que viaja por la sangre.", ht: "Yon blokaj nan yon veso sangen ki rive akoz yon materyèl k ap deplase nan san an." },
+{ term: "anemia", en: "A condition in which the blood has too little hemoglobin or too few healthy red blood cells.", es: "Una condición en la que la sangre tiene poca hemoglobina o pocos glóbulos rojos sanos.", ht: "Yon pwoblèm kote san an pa gen ase emoglobin oswa globil wouj ki an sante." },
+{ term: "hypoxia", en: "A shortage of oxygen reaching the body's tissues.", es: "Una cantidad insuficiente de oxígeno que llega a los tejidos del cuerpo.", ht: "Lè tisi kò a pa resevwa ase oksijèn." },
+{ term: "hypoxemia", en: "A lower-than-normal level of oxygen in the blood.", es: "Un nivel de oxígeno en la sangre inferior al normal.", ht: "Lè nivo oksijèn nan san an pi ba pase nòmal." },
+{ term: "cyanosis", en: "A bluish or grayish color of the skin or lips that can indicate low oxygen or circulation problems.", es: "Una coloración azulada o grisácea de la piel o los labios que puede indicar problemas de oxígeno o circulación.", ht: "Lè po a oswa bouch yo pran yon koulè ble oswa gri, sa ki ka montre pwoblèm oksijèn oswa sikilasyon san." },
+{ term: "syncope", en: "A temporary loss of consciousness, commonly called fainting.", es: "Una pérdida temporal del conocimiento, comúnmente llamada desmayo.", ht: "Lè yon moun pèdi konesans pou yon ti tan, yo rele sa endispoze." },
+{ term: "vertigo", en: "A sensation that you or your surroundings are spinning or moving.", es: "La sensación de que usted o su entorno están girando o moviéndose.", ht: "Lè ou santi ou menm oswa anviwònman ou ap vire oswa deplase." },
+{ term: "paresthesia", en: "An unusual sensation such as tingling, pins and needles, or numbness.", es: "Una sensación inusual como hormigueo, pinchazos o entumecimiento.", ht: "Yon sansasyon dwòl tankou pikotman, pike, oswa pèt sansasyon." },
+{ term: "neuropathy", en: "Damage or dysfunction of nerves that can cause pain, weakness, or numbness.", es: "Daño o alteración de los nervios que puede causar dolor, debilidad o entumecimiento.", ht: "Domaj oswa pwoblèm nan nè yo ki ka lakòz doulè, feblès oswa pèt sansasyon." },
+{ term: "seizure", en: "A sudden episode of abnormal electrical activity in the brain.", es: "Un episodio repentino de actividad eléctrica anormal en el cerebro.", ht: "Yon epizòd toudenkou kote aktivite elektrik nan sèvo a vin pa nòmal." },
+{ term: "delirium", en: "A sudden change in attention and awareness that can cause confusion.", es: "Un cambio repentino en la atención y la conciencia que puede causar confusión.", ht: "Yon chanjman toudenkou nan atansyon ak konsyans ki ka lakòz konfizyon." },
+{ term: "cognitive impairment", en: "Difficulty with mental abilities such as memory, attention, or reasoning.", es: "Dificultad con capacidades mentales como la memoria, la atención o el razonamiento.", ht: "Difikilte ak kapasite mantal tankou memwa, atansyon oswa rezònman." },
+{ term: "dysphagia", en: "Difficulty swallowing food, liquids, or pills.", es: "Dificultad para tragar alimentos, líquidos o pastillas.", ht: "Difikilte pou vale manje, likid oswa grenn medikaman." },
+{ term: "dyspnea", en: "Difficulty or discomfort when breathing.", es: "Dificultad o molestia al respirar.", ht: "Difikilte oswa malèz lè yon moun ap respire." },
+{ term: "apnea", en: "A temporary pause in breathing.", es: "Una pausa temporal en la respiración.", ht: "Lè respirasyon an kanpe pou yon ti tan." },
+{ term: "tachypnea", en: "Breathing faster than normal.", es: "Respirar más rápido de lo normal.", ht: "Lè yon moun ap respire pi vit pase nòmal." },
+{ term: "bradypnea", en: "Breathing more slowly than normal.", es: "Respirar más lentamente de lo normal.", ht: "Lè yon moun ap respire pi dousman pase nòmal." },
+{ term: "palpitations", en: "The feeling that your heart is racing, pounding, or skipping beats.", es: "La sensación de que el corazón late rápido, fuerte o de forma irregular.", ht: "Lè ou santi kè ou ap bat vit, fò, oswa li sote batman." },
+{ term: "arrhythmia", en: "An irregular or abnormal heartbeat.", es: "Un latido cardíaco irregular o anormal.", ht: "Yon bat kè ki pa regilye oswa ki pa nòmal." },
+{ term: "hyperglycemia", en: "A higher-than-normal level of sugar in the blood.", es: "Un nivel de azúcar en la sangre más alto de lo normal.", ht: "Lè nivo sik nan san an pi wo pase nòmal." },
+{ term: "hypoglycemia", en: "A lower-than-normal level of sugar in the blood.", es: "Un nivel de azúcar en la sangre más bajo de lo normal.", ht: "Lè nivo sik nan san an pi ba pase nòmal." },
+{ term: "electrolyte imbalance", en: "An abnormal level of minerals in the blood that help the body function.", es: "Un nivel anormal de minerales en la sangre que ayudan al cuerpo a funcionar.", ht: "Lè nivo mineral nan san an pa nòmal, sa ki ka afekte fason kò a fonksyone." },
+{ term: "dehydration", en: "When the body loses more fluid than it takes in.", es: "Cuando el cuerpo pierde más líquido del que recibe.", ht: "Lè kò a pèdi plis likid pase kantite li resevwa." },
+{ term: "fluid overload", en: "When too much fluid builds up in the body.", es: "Cuando se acumula demasiado líquido en el cuerpo.", ht: "Lè twòp likid akimile nan kò a." },
+{ term: "renal", en: "Related to the kidneys.", es: "Relacionado con los riñones.", ht: "Ki gen rapò ak ren yo." },
+{ term: "hepatic", en: "Related to the liver.", es: "Relacionado con el hígado.", ht: "Ki gen rapò ak fwa a." },
+{ term: "cardiac", en: "Related to the heart.", es: "Relacionado con el corazón.", ht: "Ki gen rapò ak kè a." },
+{ term: "pulmonary", en: "Related to the lungs.", es: "Relacionado con los pulmones.", ht: "Ki gen rapò ak poumon yo." },
+{ term: "gastrointestinal", en: "Related to the stomach and intestines.", es: "Relacionado con el estómago y los intestinos.", ht: "Ki gen rapò ak lestomak ak trip yo." },
+{ term: "musculoskeletal", en: "Related to muscles, bones, joints, and supporting tissues.", es: "Relacionado con los músculos, huesos, articulaciones y tejidos de soporte.", ht: "Ki gen rapò ak misk, zo, jwenti ak tisi ki soutni yo." },
+{ term: "subcutaneous", en: "Located or administered under the skin.", es: "Ubicado o administrado debajo de la piel.", ht: "Ki sitiye oswa yo bay anba po a." },
+{ term: "intravenous", en: "Given directly into a vein.", es: "Administrado directamente en una vena.", ht: "Yo bay li dirèkteman nan yon venn." },
+{ term: "intramuscular", en: "Given into a muscle.", es: "Administrado en un músculo.", ht: "Yo bay li nan yon misk." },
+{ term: "oral administration", en: "Taking medicine by mouth.", es: "Tomar un medicamento por la boca.", ht: "Pran medikaman nan bouch." },
+{ term: "topical", en: "Applying a medicine directly to the outside of the body.", es: "Aplicar un medicamento directamente en el exterior del cuerpo.", ht: "Aplike yon medikaman dirèkteman sou deyò kò a." },
+{ term: "invasive procedure", en: "A medical procedure that enters the body, often through an incision or instrument.", es: "Un procedimiento médico que entra en el cuerpo, a menudo mediante una incisión o instrumento.", ht: "Yon pwosedi medikal ki antre nan kò a, souvan atravè yon koupe oswa yon enstriman." },
+{ term: "noninvasive", en: "A test or procedure that does not enter the body.", es: "Una prueba o procedimiento que no entra en el cuerpo.", ht: "Yon tès oswa pwosedi ki pa antre andedan kò a." },
+{ term: "histology", en: "The study of tissues under a microscope.", es: "El estudio de los tejidos bajo un microscopio.", ht: "Etid tisi yo anba mikwoskòp." },
+{ term: "radiology", en: "The medical field that uses imaging to help diagnose and monitor conditions.", es: "La especialidad médica que utiliza imágenes para diagnosticar y vigilar condiciones.", ht: "Domèn medikal ki sèvi ak imaj pou ede dekouvri ak kontwole pwoblèm sante." },
+{ term: "contrast agent", en: "A substance used during certain imaging tests to make structures easier to see.", es: "Una sustancia utilizada en ciertas pruebas de imagen para visualizar mejor las estructuras.", ht: "Yon sibstans yo itilize nan kèk tès imaj pou fè estrikti yo parèt pi klè." },
+{ term: "incidental finding", en: "An unexpected result discovered during a test performed for another reason.", es: "Un hallazgo inesperado descubierto durante una prueba realizada por otro motivo.", ht: "Yon rezilta yo dekouvri san yo pa t ap chèche li pandan yon tès pou yon lòt rezon." },
+{ term: "clinical significance", en: "The importance of a finding for a person's health or medical care.", es: "La importancia de un hallazgo para la salud o atención médica de una persona.", ht: "Enpòtans yon rezilta genyen pou sante oswa swen medikal yon moun." },
+{ term: "normal range", en: "The range of results typically found in a defined healthy reference group.", es: "El intervalo de resultados que suele encontrarse en un grupo de referencia saludable definido.", ht: "Entèval rezilta yo jwenn anjeneral nan yon gwoup referans ki an sante." },
+{ term: "borderline result", en: "A result near the cutoff between normal and abnormal; its meaning depends on the test.", es: "Un resultado cercano al límite entre lo normal y lo anormal; su significado depende de la prueba.", ht: "Yon rezilta ki toupre limit ant nòmal ak anòmal; siyifikasyon li depann de tès la." },
+{ term: "reference range", en: "A range used to help interpret a test result; it does not always define health or disease.", es: "Un intervalo que ayuda a interpretar un resultado; no siempre determina si existe salud o enfermedad.", ht: "Yon entèval ki ede esplike yon rezilta tès; li pa toujou detèmine si yon moun an sante oswa malad." },
+{ term: "differential", en: "A blood test measurement that counts different types of white blood cells.", es: "Un análisis de sangre que cuenta los distintos tipos de glóbulos blancos.", ht: "Yon tès san ki konte diferan kalite globil blan." },
+{ term: "complete blood count", en: "A blood test that measures different blood cells and related values.", es: "Un análisis de sangre que mide diferentes células sanguíneas y valores relacionados.", ht: "Yon tès san ki mezire diferan selil san yo ak lòt valè ki gen rapò." },
+{ term: "metabolic panel", en: "A group of blood tests that checks substances related to organ function and metabolism.", es: "Un grupo de análisis de sangre que evalúa sustancias relacionadas con la función de los órganos y el metabolismo.", ht: "Yon gwoup tès san ki tcheke sibstans ki gen rapò ak fonksyon ògàn yo ak metabolis." },
+{ term: "metabolism", en: "The chemical processes the body uses to turn food into energy and maintain itself.", es: "Los procesos químicos que el cuerpo utiliza para convertir alimentos en energía y mantenerse.", ht: "Pwosesis chimik kò a itilize pou transfòme manje an enèji epi kenbe kò a ap fonksyone." },
+{ term: "therapeutic window", en: "The range between a medicine's effective dose and a dose that may cause harm.", es: "El intervalo entre la dosis eficaz de un medicamento y una dosis que puede causar daño.", ht: "Entèval ant dòz medikaman ki efikas la ak dòz ki ka lakòz domaj." },
+{ term: "placebo", en: "A treatment with no active ingredient used as a comparison in research.", es: "Un tratamiento sin ingrediente activo que se utiliza como comparación en investigaciones.", ht: "Yon tretman ki pa gen engredyan aktif yo itilize pou konpare rezilta nan rechèch." },
+{ term: "placebo effect", en: "A change in how someone feels after receiving a treatment because of expectations or context.", es: "Un cambio en cómo se siente una persona después de recibir un tratamiento debido a sus expectativas o al contexto.", ht: "Yon chanjman nan fason yon moun santi l apre li resevwa yon tretman, akoz sa li te espere oswa sitiyasyon an." },
+{ term: "clinical trial", en: "A research study that evaluates a medical treatment, test, or intervention in people.", es: "Un estudio de investigación que evalúa un tratamiento, prueba o intervención médica en personas.", ht: "Yon etid rechèch ki evalye yon tretman, tès oswa entvansyon medikal sou moun." },
+{ term: "randomized controlled trial", en: "A study that assigns participants to groups by chance to compare treatments fairly.", es: "Un estudio que asigna participantes a grupos al azar para comparar tratamientos de manera justa.", ht: "Yon etid kote yo mete patisipan yo nan gwoup pa aza pou konpare tretman yo yon fason ki jis." },
+{ term: "evidence-based medicine", en: "Medical care guided by the best available research, clinical expertise, and patient needs.", es: "Atención médica guiada por la mejor investigación disponible, la experiencia clínica y las necesidades del paciente.", ht: "Swen medikal ki baze sou pi bon rechèch ki disponib, eksperyans klinik ak bezwen pasyan an." },
+{ term: "informed decision", en: "A choice made after understanding the available options, benefits, risks, and uncertainties.", es: "Una decisión tomada después de comprender las opciones, los beneficios, los riesgos y las incertidumbres.", ht: "Yon desizyon yon moun pran apre li fin konprann opsyon yo, avantaj yo, risk yo ak sa ki pa sèten." },
+{ term: "shared decision-making", en: "A process in which a patient and healthcare professional make a care decision together.", es: "Un proceso en el que el paciente y el profesional de salud deciden juntos sobre la atención.", ht: "Yon pwosesis kote pasyan an ak pwofesyonèl sante a pran desizyon sou swen an ansanm." },
+{ term: "informed refusal", en: "Choosing not to accept a recommended treatment after understanding its risks and benefits.", es: "Decidir no aceptar un tratamiento recomendado después de comprender sus riesgos y beneficios.", ht: "Chwazi pa aksepte yon tretman yo rekòmande apre ou fin konprann risk ak avantaj li yo." },
+{ term: "capacity", en: "The ability to understand information and make a particular healthcare decision.", es: "La capacidad de comprender información y tomar una decisión médica específica.", ht: "Kapasite pou konprann enfòmasyon epi pran yon desizyon medikal espesifik." },
+{ term: "advance directive", en: "A document explaining someone's healthcare wishes if they cannot communicate them later.", es: "Un documento que explica los deseos médicos de una persona si después no puede comunicarlos.", ht: "Yon dokiman ki esplike volonte yon moun sou swen medikal si li pa kapab kominike yo pita." },
+{ term: "discharge", en: "Permission to leave a hospital or healthcare facility after care.", es: "Autorización para salir de un hospital o centro de salud después de recibir atención.", ht: "Pèmisyon pou kite lopital oswa etablisman sante apre ou fin resevwa swen." },
+{ term: "follow-up", en: "A later appointment or contact to check progress after treatment or a visit.", es: "Una cita o contacto posterior para revisar el progreso después de un tratamiento o visita.", ht: "Yon randevou oswa kontak pita pou verifye pwogrè apre yon tretman oswa vizit." },
+{ term: "referral", en: "A request for a patient to see another healthcare professional or specialist.", es: "Una solicitud para que el paciente consulte a otro profesional de salud o especialista.", ht: "Yon demann pou yon pasyan al wè yon lòt pwofesyonèl sante oswa espesyalis." },
+{ term: "prior authorization", en: "Approval an insurance plan may require before covering certain care or medicine.", es: "La aprobación que un seguro puede exigir antes de cubrir ciertos servicios o medicamentos.", ht: "Apwobasyon yon asirans ka mande anvan li peye pou kèk swen oswa medikaman." },
+{ term: "deductible", en: "The amount you pay for covered healthcare before insurance starts paying under the plan's rules.", es: "La cantidad que usted paga por la atención cubierta antes de que el seguro comience a pagar según las reglas del plan.", ht: "Kantite lajan ou peye pou swen ki kouvri yo anvan asirans lan kòmanse peye selon règ plan an." },
+{ term: "copayment", en: "A fixed amount you pay for a covered healthcare service or medicine.", es: "Una cantidad fija que usted paga por un servicio médico o medicamento cubierto.", ht: "Yon kantite lajan fiks ou peye pou yon sèvis sante oswa medikaman asirans lan kouvri." },
+{ term: "coinsurance", en: "The percentage of covered healthcare costs you pay after meeting your deductible, under your plan's rules.", es: "El porcentaje de los costos médicos cubiertos que usted paga después de cumplir con el deducible, según las reglas de su plan.", ht: "Pousantaj depans swen sante ki kouvri ou peye apre ou fin satisfè franchiz la, selon règ plan ou." },
+{ term: "out-of-pocket maximum", en: "The most you pay for covered in-network services during a plan year, subject to plan rules.", es: "La cantidad máxima que paga por servicios cubiertos dentro de la red durante el año del plan, según sus reglas.", ht: "Pi gwo kantite lajan ou peye pou sèvis ki kouvri nan rezo a pandan ane plan an, selon règ li yo." },
+{ term: "in-network", en: "Healthcare professionals or facilities that have a contract with your insurance plan.", es: "Profesionales o centros de salud que tienen un contrato con su seguro médico.", ht: "Pwofesyonèl oswa etablisman sante ki gen yon kontra ak plan asirans ou." },
+{ term: "out-of-network", en: "Healthcare professionals or facilities that do not have a contract with your insurance plan.", es: "Profesionales o centros de salud que no tienen un contrato con su seguro médico.", ht: "Pwofesyonèl oswa etablisman sante ki pa gen yon kontra ak plan asirans ou." },
+{ term: "medical necessity", en: "A healthcare service considered appropriate for diagnosing or treating a health condition under applicable standards and coverage rules.", es: "Un servicio médico considerado apropiado para diagnosticar o tratar una condición según las normas y reglas de cobertura aplicables.", ht: "Yon sèvis sante yo konsidere apwopriye pou dekouvri oswa trete yon pwoblèm sante selon nòm ak règ kouvèti ki aplikab yo." },
+{ term: "triage", en: "Sorting patients by how urgently they need medical attention.", es: "Clasificar a los pacientes según la urgencia con la que necesitan atención médica.", ht: "Klase pasyan yo selon jan yo bezwen swen medikal ijan." },
+{ term: "stable condition", en: "A condition that is not changing significantly at the moment; it does not always mean harmless.", es: "Una condición que no está cambiando significativamente en ese momento; no siempre significa que sea inofensiva.", ht: "Yon pwoblèm sante ki pa chanje anpil nan moman an; sa pa toujou vle di li pa danjere." },
+{ term: "critical condition", en: "A very serious condition that may threaten vital body functions.", es: "Una condición muy grave que puede poner en peligro funciones vitales del cuerpo.", ht: "Yon pwoblèm sante ki grav anpil epi ki ka menase fonksyon vital kò a." },
+{ term: "guarded prognosis", en: "A medical outlook that is uncertain or concerning.", es: "Un pronóstico médico incierto o preocupante.", ht: "Yon previzyon medikal ki pa sèten oswa ki bay enkyetid." },
+{ term: "full code", en: "A care status indicating that resuscitation and other emergency life-support measures may be attempted if needed.", es: "Un estado de atención que indica que se pueden intentar maniobras de reanimación y otras medidas de soporte vital de emergencia si son necesarias.", ht: "Yon estati swen ki endike yo ka eseye reyanimasyon ak lòt mezi ijans pou sipòte lavi si sa nesesè." },
+{ term: "do not resuscitate", en: "A medical order not to attempt CPR if a person's heart stops or they stop breathing.", es: "Una orden médica de no intentar la reanimación cardiopulmonar si el corazón de una persona se detiene o deja de respirar.", ht: "Yon lòd medikal pou pa eseye reyanimasyon kadyopilmonè si kè yon moun sispann bat oswa li sispann respire." },
+{ term: "empiric treatment", en: "Treatment started based on the most likely cause before all test results are available.", es: "Tratamiento que comienza según la causa más probable antes de disponer de todos los resultados.", ht: "Tretman yo kòmanse dapre kòz yo panse ki pi pwobab anvan tout rezilta tès yo disponib." },
+{ term: "refractory", en: "Not responding adequately to a treatment.", es: "Que no responde adecuadamente a un tratamiento.", ht: "Ki pa reponn ase byen ak yon tretman." },
+{ term: "resistant", en: "Not easily affected by a medicine or treatment that would normally work.", es: "Que no se ve afectado fácilmente por un medicamento o tratamiento que normalmente funcionaría.", ht: "Ki pa fasil afekte pa yon medikaman oswa tretman ki ta dwe mache nòmalman." },
+{ term: "remodeling", en: "Changes in the size, shape, or structure of tissue or an organ over time.", es: "Cambios en el tamaño, la forma o la estructura de un tejido u órgano con el tiempo.", ht: "Chanjman nan gwosè, fòm oswa estrikti yon tisi oswa ògàn sou tan." },
+{ term: "proliferation", en: "An increase in the number of cells through cell division.", es: "Un aumento del número de células mediante la división celular.", ht: "Ogmantasyon kantite selil atravè divizyon selilè." },
+{ term: "necrosis", en: "The death of living cells or tissues due to disease or injury.", es: "La muerte de células o tejidos vivos debido a una enfermedad o lesión.", ht: "Lanmò tisi oswa selil nan kò a akòz yon maladi oswa yon blesi." },
+{ term: "fibrosis", en: "The buildup of scar-like connective tissue in an organ or other area.", es: "La acumulación de tejido conectivo parecido a una cicatriz en un órgano u otra zona.", ht: "Lè tisi konjonktif ki sanble ak mak blesi akimile nan yon ògàn oswa lòt zòn." },
+{ term: "calcification", en: "The buildup of calcium salts in tissue where they may not normally be present.", es: "La acumulación de sales de calcio en tejidos donde normalmente podrían no estar presentes.", ht: "Lè sèl kalsyòm akimile nan tisi kote yo ka pa nòmalman prezan." },
+{ term: "atrophic", en: "Relating to tissue or an organ that has become smaller or thinner.", es: "Relacionado con un tejido u órgano que se ha vuelto más pequeño o delgado.", ht: "Ki gen rapò ak yon tisi oswa ògàn ki vin pi piti oswa pi mens." },
+{ term: "acute exacerbation", en: "A sudden worsening of an existing health condition.", es: "Un empeoramiento repentino de una condición de salud existente.", ht: "Lè yon pwoblèm sante ki deja la vin pi mal toudenkou." },
+{ term: "clinical correlation", en: "Comparing a test or imaging finding with symptoms, examination, and medical history to understand its meaning.", es: "Comparar un hallazgo de una prueba o imagen con los síntomas, el examen y el historial médico para entender su significado.", ht: "Konpare rezilta yon tès oswa imaj ak sentòm, egzamen ak istwa medikal pou konprann siyifikasyon li." },
+{ term: "sepsis", en: "A severe, life-threatening body reaction to an infection.", es: "Una reacción corporal grave y potencialmente mortal a una infección.", ht: "Yon reyaksyon kò a ki grav anpil epi ki ka touye moun akòz yon enfeksyon." },
+{ term: "bradycardia", en: "An unusually slow heart rate.", es: "Un ritmo cardíaco inusualmente lento.", ht: "Yon ritm kè ki pi dousman pase nòmal." },
+{ term: "tachycardia", en: "An unusually fast heart rate.", es: "Un ritmo cardíaco inusualmente rápido.", ht: "Yon ritm kè ki pi rapid pase nòmal." },
+{ term: "impressive", en: "Deeply concerning or severe (not a good thing).", es: "Muy preocupante o grave (no es algo bueno).", ht: "Ki bay gwo enkyetid oswa ki grav (sa pa vle di yon bon bagay)." },
+{ term: "grossly intact", en: "Appearing generally healthy and working fine during a basic exam.", es: "Que parece generalmente sano y funciona bien en un examen básico.", ht: "Ki parèt an sante an jeneral epi ki mache byen nan yon examen senp." },
+{ term: "occult", en: "Hidden or invisible to the naked eye.", es: "Oculto o invisible a simple vista.", ht: "Kache oswa ki pa parèt devan je." },
+{ term: "relapse", en: "The return of symptoms or sickness after getting better.", es: "El regreso de los síntomas o la enfermedad después de mejorar.", ht: "Lè sentòm yo oswa maladi a tounen apre ou te fin pi byen." },
+{ term: "intubation", en: "Placing a flexible tube down the throat to help breathing.", es: "Colocar un tubo flexible en las vías respiratorias para ayudar a respirar.", ht: "Mete yon tib fleksib nan pasay lè a pou ede yon moun respire." },
+{ term: "outpatient", en: "A treatment or visit where you leave the hospital on the same day.", es: "Un tratamiento o visita donde se va del hospital el mismo día.", ht: "Yon tretman oswa vizit kote ou kite lopital la menm jou a." },
+{ term: "inpatient", en: "Staying overnight in the hospital for care.", es: "Permanecer hospitalizado durante la noche para recibir atención.", ht: "Lè yon moun rete pase nwit lan lopital la pou yo ba li swen." },
+{ term: "adverse effect", en: "An unexpected, harmful, or bad reaction to a treatment.", es: "Una reacción inesperada, dañina o mala a un tratamiento.", ht: "Yon move reyaksyon ki parèt sibit epi ki bay pwoblèm apre yon tretman." },
+{ term: "systemic", en: "Affecting the entire body instead of just one spot.", es: "Que afecta a todo el cuerpo en lugar de a un solo lugar.", ht: "Ki touche tout kò a nèt olye li rete yon sèl kote." },
+{ term: "localized", en: "Staying in one specific area of the body without spreading.", es: "Que se mantiene en un área específica del cuerpo sin extenderse.", ht: "Ki rete nan yon sèl zòn nan kò a san li pa gaye." },
+{ term: "ambulatory", en: "Able to walk around and not confined to a bed.", es: "Capaz de caminar y que no está confinado a una cama.", ht: "Ki kapab mache, ki pa oblije rete nan yon kabann." },
+{ term: "febrile", en: "Having or showing symptoms of a fever.", es: "Que tiene fiebre o presenta síntomas de ella.", ht: "Lè yon moun gen lafyèv oswa li montre sentòm lafyèv." },
+{ term: "cognitive", en: "Relating to mental activities like thinking, reasoning, and remembering.", es: "Relacionado con las actividades mentales como pensar, razonar y recordar.", ht: "Ki gen rapò ak aktivite nan lespri a tankou reflechi, rezone, ak sonje." },
+{ term: "congestion", en: "An abnormal buildup of fluid, such as blood in vessels or mucus in the nose.", es: "Una acumulación anormal de líquido, como sangre en los vasos o mucosidad en la nariz.", ht: "Yon kantite likid ki rasanble yon kote yon fason ki pa nòmal, tankou san nan veso sangen oswa glè nan nen." }
 ];
+
 function searchJargon() {
 const query = document.getElementById("search-input").value.toLowerCase().trim();
 const resultBox = document.getElementById("result-box");
-if (query === "") { resultBox.style.display = "none"; return; }
+
+if (query === "") {
+resultBox.style.display = "none";
+return;
+}
+
 let match = medicalDictionary.find(item => item.term && item.term.toLowerCase() === query);
-if (!match) { match = medicalDictionary.find(item => item.term &&
-item.term.toLowerCase().includes(query)); }
+
+if (!match) {
+match = medicalDictionary.find(item => item.term && item.term.toLowerCase().includes(query));
+}
+
 resultBox.style.display = "block";
+
 if (match) {
 document.getElementById("res-term").innerText = match.term;
 document.getElementById("res-en").innerText = match.en;
@@ -586,12 +271,12 @@ document.getElementById("res-es").innerText = match.es;
 document.getElementById("res-ht").innerText = match.ht;
 } else {
 document.getElementById("res-term").innerText = "Not Found Yet";
-document.getElementById("res-en").innerText = "This word hasn't been added to our
-human-verified dictionary yet.";
+document.getElementById("res-en").innerText = "This word hasn't been added to our human-verified dictionary yet.";
 document.getElementById("res-es").innerText = "Esta palabra aún no ha sido agregada.";
 document.getElementById("res-ht").innerText = "Mo sa a poko ajoute.";
 }
 }
+
 document.getElementById("search-input").addEventListener("input", searchJargon);
 </script>
 </body>
